@@ -16,6 +16,14 @@ and use `composer` to install dependencies from the root of the directory:
 
     php composer.phar install
 
+Configuration Files
+-------------------
+Make a copy of .example configuration files located at config/autoload directory and fill
+in the required credentials if any.
+
+    cp config/autoload/doctrine.local.php.example config/autoload/doctrine.local.php
+    cp config/autoload/zdt.local.php.example config/autoload/zdt.local.php
+
 Web Server Setup
 ----------------
 
