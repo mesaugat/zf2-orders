@@ -8,7 +8,8 @@
     ],
     "autoload": {
         "psr-4":{
-            "Application\\" : "module/Application/src/"
+            "Application\\" : "module/Application/src/",
+            "Order\\" : "module/Order/src/"
         }
     },
     "homepage": "http://framework.zend.com/",
