@@ -24,8 +24,8 @@ class ItemController extends AbstractActionController
         $request = $this->getRequest();
         $query = $request->getQuery();
 
-        $max = (int) $query->get('max', 10);
-        $page = (int) $query->get('page', 1);
+        $max = (int)$query->get('max', 10);
+        $page = (int)$query->get('page', 1);
 
         if ($page < 1) {
             throw new BadRequestException('Invalid page');
@@ -45,16 +45,16 @@ class ItemController extends AbstractActionController
         $baseUri = $request->getUri()->getPath();
         $links = [];
         if ($page > 1) {
-            $links['prev']  = $baseUri.'?'.http_build_query($query->set('page', $page - 1)->toArray());
+            $links['prev'] = $baseUri . '?' . http_build_query($query->set('page', $page - 1)->toArray());
         }
 
         if ($page < $noOfPages) {
-            $links['next']  = $baseUri.'?'.http_build_query($query->set('page', $page + 1)->toArray());
+            $links['next'] = $baseUri . '?' . http_build_query($query->set('page', $page + 1)->toArray());
         }
 
         return new ViewModel([
             'title' => 'Items',
-            'items'  => $data,
+            'items' => $data,
             'links' => $links
         ]);
     }
@@ -83,7 +83,27 @@ class ItemController extends AbstractActionController
 
         return [
             'title' => 'Create New Item',
-            'form'  => $this->form,
+            'form' => $this->form,
         ];
+    }
+
+    public function deleteAction()
+    {
+        $id = $this->params('id');
+        $item = $this->items->find($id);
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $confirm = $request->getPost('delete_confirmation', 'no');
+
+            if ($confirm === 'yes') {
+                $this->items->remove($item);
+            }
+
+            return $this->redirect()->toRoute('items');
+        }
+
+        return compact('item');
     }
 }

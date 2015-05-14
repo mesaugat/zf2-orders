@@ -34,4 +34,11 @@ class ItemRepository extends EntityRepository
 
         return $item;
     }
+
+    public function remove(Item $item)
+    {
+        $em = $this->getEntityManager();
+        $em->remove($item);
+        $em->flush();
+    }
 }
