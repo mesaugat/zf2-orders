@@ -19,8 +19,8 @@ return [
     ],
 
     'controllers' => [
-        'invokables' => [
-            'Order\Controller\Item' => 'Order\Controller\ItemController',
+        'factories' => [
+            'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
         ],
     ],
 

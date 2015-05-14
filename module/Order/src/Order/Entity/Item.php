@@ -6,11 +6,11 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ItemRepository")
  * @ORM\Table(name="items")
  */
-
-class Item {
+class Item
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -29,6 +29,12 @@ class Item {
      * @ORM\Column(type="decimal")
      **/
     protected $rate;
+
+    public function __construct()
+    {
+        $this->created = new DateTime();
+    }
+
 
     /**
      * @return int
