@@ -4,13 +4,14 @@ namespace Order\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="customers")
  */
-
-class Customer {
+class Customer
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -31,6 +32,18 @@ class Customer {
      * @ORM\Column(type="string")
      **/
     protected $address;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
+     *
+     * @var Order[]
+     **/
+    protected $orders = null;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -70,6 +83,22 @@ class Customer {
     public function setCreated(DateTime $created)
     {
         $this->created = $created;
+    }
+
+    /**
+     * @return Order[]
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param $order
+     */
+    public function addOrder($order)
+    {
+        $this->orders[] = $order;
     }
 
     /**

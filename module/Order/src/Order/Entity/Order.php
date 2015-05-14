@@ -29,12 +29,12 @@ class Order {
     protected $created;
 
     /**
-     * @ORM\OneToOne(targetEntity="Customer")
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
      **/
     protected $customer;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="decimal")
      **/
     protected $grand_total;
 

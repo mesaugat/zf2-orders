@@ -26,7 +26,7 @@ class Item {
      **/
     protected $created;
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="decimal")
      **/
     protected $rate;
 
