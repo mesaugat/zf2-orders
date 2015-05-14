@@ -7,21 +7,22 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Rate</th>
+                <th>Rate (NRs.)</th>
                 <th>Created</th>
+                <th></th>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>2.55</td>
-                <td>July 9</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>2.55</td>
-                <td>July 9</td>
-            </tr>
+            <?php foreach ($items as $item): ?>
+                <tr>
+                    <td><?php echo $item->getId() ?></td>
+                    <td><?php echo $item->getName() ?></td>
+                    <td><?php echo $item->getRate() ?></td>
+                    <td><?php echo $item->getCreated()->format('M d, Y') ?></td>
+                    <td>
+                        <a class="btn btn-sm btn-default" href="<?php echo $this->url('items', ['action' => 'edit', 'id' => $item->getId() ]); ?>">Edit</a>
+                        <a class="btn btn-sm btn-default" href="<?php echo $this->url('items', ['action' => 'delete', 'id' => $item->getId() ]); ?>">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </table>
         <div>
             <a class="btn btn-default" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
