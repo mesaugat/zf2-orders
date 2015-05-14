@@ -24,14 +24,14 @@ class Customer
     protected $name;
 
     /**
-     * @ORM\Column(type="datetime")
-     **/
-    protected $created;
-
-    /**
      * @ORM\Column(type="string")
      **/
     protected $address;
+
+    /**
+     * @ORM\Column(type="datetime")
+     **/
+    protected $created;
 
     /**
      * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
@@ -94,9 +94,9 @@ class Customer
     }
 
     /**
-     * @param $order
+     * @param Order $order
      */
-    public function addOrder($order)
+    public function addOrder(Order $order)
     {
         $this->orders[] = $order;
     }
@@ -106,7 +106,7 @@ class Customer
      */
     public function getAddress()
     {
-        return $this->rate;
+        return $this->address;
     }
 
     /**
