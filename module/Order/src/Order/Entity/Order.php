@@ -39,6 +39,18 @@ class Order {
     protected $grand_total;
 
     /**
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order")
+     *
+     * @var OrderItem[]
+     **/
+    protected $orderItems = null;
+
+    public function __construct()
+    {
+        $this->orderItems = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -108,5 +120,13 @@ class Order {
     public function setCreated(DateTime $created)
     {
         $this->created = $created;
+    }
+
+    /**
+     * @param OrderItem $orderItem
+     */
+    public  function addOrderItem(OrderItem $orderItem) {
+        $orderItem->setOrder($this);
+        $this->orderItems[] = $orderItem;
     }
 }
