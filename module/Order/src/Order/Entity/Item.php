@@ -2,8 +2,8 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Order\Entity\Traits\CreatedDateTrait;
 
 /**
  * @ORM\Entity(repositoryClass="ItemRepository")
@@ -12,7 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Item
 {
-    const DATE_FORMAT = 'M d, Y h:i:s A';
+    use CreatedDateTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -23,10 +24,6 @@ class Item
      * @ORM\Column(type="string")
      **/
     protected $name;
-    /**
-     * @ORM\Column(type="datetime")
-     **/
-    protected $created;
     /**
      * @ORM\Column(type="decimal")
      **/
@@ -54,30 +51,6 @@ class Item
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedDate()
-    {
-        return $this->getCreated()->format(self::DATE_FORMAT);
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreated()
-    {
-        $this->created = new DateTime();
     }
 
     /**

@@ -19,7 +19,7 @@
                         <td><?php echo $item->getId() ?></td>
                         <td><?php echo $item->getName() ?></td>
                         <td><?php echo $item->getRate() ?></td>
-                        <td><?php echo $item->getCreatedDate() ?></td>
+                        <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
                         <td>
                             <a class="btn btn-sm btn-default"
                                href="<?php echo $this->url('items', ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>

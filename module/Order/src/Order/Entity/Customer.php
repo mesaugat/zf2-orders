@@ -2,9 +2,9 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Order\Entity\Traits\CreatedDateTrait;
 
 /**
  * @ORM\Entity
@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Customer
 {
+    use CreatedDateTrait;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -28,11 +29,6 @@ class Customer
      * @ORM\Column(type="string")
      **/
     protected $address;
-
-    /**
-     * @ORM\Column(type="datetime")
-     **/
-    protected $created;
 
     /**
      * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
@@ -67,22 +63,6 @@ class Customer
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreated()
-    {
-        $this->created = new DateTime();
     }
 
     /**

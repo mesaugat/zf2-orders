@@ -2,8 +2,8 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Order\Entity\Traits\CreatedDateTrait;
 
 /**
  * @ORM\Entity
@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks
  */
 class Order {
+
+    use CreatedDateTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -22,11 +25,6 @@ class Order {
      * @ORM\Column(type="integer")
      **/
     protected $order_no;
-
-    /**
-     * @ORM\Column(type="datetime")
-     **/
-    protected $created;
 
     /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
@@ -104,22 +102,6 @@ class Order {
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreated()
-    {
-        $this->created = new DateTime();
     }
 
     /**
