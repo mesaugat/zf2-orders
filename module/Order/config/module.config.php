@@ -17,6 +17,11 @@ return [
             ]
         ]
     ],
+    'service_manager' => [
+        'factories' => [
+            'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory'
+        ]
+    ],
     'controllers' => [
         'factories' => [
             'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',

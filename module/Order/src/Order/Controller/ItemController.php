@@ -3,9 +3,8 @@
 
 namespace Order\Controller;
 
-use InvalidArgumentException;
 use Order\Form\ItemForm;
-use Order\Foundation\Exception\NotFoundException;
+use Order\Service\ItemService;
 use Zend\View\Model\ViewModel;
 use Order\Entity\ItemRepository;
 use Order\Foundation\AbstractController as Controller;
@@ -14,51 +13,25 @@ class ItemController extends Controller
 {
     protected $form;
     protected $items;
+    protected $service;
 
-    public function __construct(ItemForm $form, ItemRepository $repository)
+    public function __construct(ItemForm $form, ItemRepository $repository, ItemService $service)
     {
         $this->form = $form;
         $this->items = $repository;
+        $this->service = $service;
     }
 
     public function indexAction()
     {
         $request = $this->getRequest();
+        $baseUri = $request->getUri()->getPath();
         $query = $request->getQuery();
 
-        $max = (int)$query->get('max', 10);
-        $page = (int)$query->get('page', 1);
+        $data = $this->service->fetchList($baseUri, $query);
+        $data['title'] = 'Items';
 
-        if ($page < 1) {
-            throw new InvalidArgumentException($this->translate('exception.invalid_page'));
-        }
-
-        $offset = ($page - 1) * $max;
-
-        $list = $this->items->fetchList($offset, $max);
-        $items = $list->getIterator()->getArrayCopy();
-        $total = $list->count();
-        $noOfPages = ceil($total / $max);
-
-        if ($total > 0) {
-            if ($page > $noOfPages || $page < 1) {
-                throw new NotFoundException($this->translate('exception.page_not_found'));
-            }
-        }
-
-        $baseUri = $request->getUri()->getPath();
-        $links = [];
-        if ($page > 1) {
-            $links['prev'] = $baseUri . '?' . http_build_query($query->set('page', $page - 1)->toArray());
-        }
-
-        if ($page < $noOfPages) {
-            $links['next'] = $baseUri . '?' . http_build_query($query->set('page', $page + 1)->toArray());
-        }
-
-        $title = 'Items';
-
-        return new ViewModel(compact('title', 'items', 'links', 'total'));
+        return new ViewModel($data);
     }
 
     public function addAction()
@@ -121,6 +94,7 @@ class ItemController extends Controller
 
                 $item = $this->form->getData();
                 $this->items->update($item);
+
                 return $this->redirect()->toRoute('items');
             }
         }
