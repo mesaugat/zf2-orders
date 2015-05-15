@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Item
 {
+    const DATE_FORMAT = 'M d, Y h:i:s A';
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -61,6 +62,14 @@ class Item
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedDate()
+    {
+        return $this->getCreated()->format(self::DATE_FORMAT);
     }
 
     /**

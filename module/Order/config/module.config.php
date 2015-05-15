@@ -41,7 +41,7 @@ return [
                     'route' => '/items[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[1-9]+',
+                        'id' => '\d+',
                     ],
                     'defaults' => [
                         'controller' => 'Order\Controller\Item',

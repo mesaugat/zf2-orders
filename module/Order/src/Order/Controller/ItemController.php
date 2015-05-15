@@ -36,12 +36,14 @@ class ItemController extends Controller
         $offset = ($page - 1) * $max;
 
         $list = $this->items->fetchList($offset, $max);
-        $data = $list->getIterator()->getArrayCopy();
+        $items = $list->getIterator()->getArrayCopy();
         $total = $list->count();
         $noOfPages = ceil($total / $max);
 
-        if ($page > $noOfPages || $page < 1) {
-            throw new NotFoundException($this->translate('exception.page_not_found'));
+        if ($total > 0) {
+            if ($page > $noOfPages || $page < 1) {
+                throw new NotFoundException($this->translate('exception.page_not_found'));
+            }
         }
 
         $baseUri = $request->getUri()->getPath();
@@ -54,11 +56,10 @@ class ItemController extends Controller
             $links['next'] = $baseUri . '?' . http_build_query($query->set('page', $page + 1)->toArray());
         }
 
-        return new ViewModel([
-            'title' => 'Items',
-            'items' => $data,
-            'links' => $links
-        ]);
+        $title = 'Items';
+
+
+        return new ViewModel(compact('title', 'items', 'links', 'total'));
     }
 
     public function addAction()

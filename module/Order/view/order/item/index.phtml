@@ -3,27 +3,33 @@
         <?php $this->headTitle($title); ?>
         <h1><?php echo $this->escapeHtml($title); ?></h1>
 
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Rate (NRs.)</th>
-                <th>Created</th>
-                <th></th>
-            </tr>
-            <?php foreach ($items as $item): ?>
+        <?php if (empty($items)): ?>
+            <div class="alert alert-info"><?php echo $this->translate('no_items') ?></div>
+        <?php else: ?>
+            <table class="table">
                 <tr>
-                    <td><?php echo $item->getId() ?></td>
-                    <td><?php echo $item->getName() ?></td>
-                    <td><?php echo $item->getRate() ?></td>
-                    <td><?php echo $item->getCreated()->format('M d, Y') ?></td>
-                    <td>
-                        <a class="btn btn-sm btn-default" href="<?php echo $this->url('items', ['action' => 'edit', 'id' => $item->getId() ]); ?>">Edit</a>
-                        <a class="btn btn-sm btn-default" href="<?php echo $this->url('items', ['action' => 'delete', 'id' => $item->getId() ]); ?>">Delete</a>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Rate (NRs.)</th>
+                    <th>Created</th>
+                    <th></th>
                 </tr>
-            <?php endforeach; ?>
-        </table>
+                <?php foreach ($items as $item): ?>
+                    <tr>
+                        <td><?php echo $item->getId() ?></td>
+                        <td><?php echo $item->getName() ?></td>
+                        <td><?php echo $item->getRate() ?></td>
+                        <td><?php echo $item->getCreatedDate() ?></td>
+                        <td>
+                            <a class="btn btn-sm btn-default"
+                               href="<?php echo $this->url('items', ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
+                            <a class="btn btn-sm btn-default" href="<?php echo $this->url('items',
+                                ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
         <div>
             <a class="btn btn-default" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
         </div>
