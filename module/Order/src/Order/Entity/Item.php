@@ -4,6 +4,7 @@ namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Order\Entity\Traits\CreatedDateTrait;
+use Order\Entity\Traits\PrimaryKeyTrait;
 
 /**
  * @ORM\Entity(repositoryClass="ItemRepository")
@@ -12,14 +13,8 @@ use Order\Entity\Traits\CreatedDateTrait;
  */
 class Item
 {
-    use CreatedDateTrait;
+    use PrimaryKeyTrait, CreatedDateTrait;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
-    protected $id;
     /**
      * @ORM\Column(type="string")
      **/
@@ -28,14 +23,6 @@ class Item
      * @ORM\Column(type="decimal")
      **/
     protected $rate;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @return string

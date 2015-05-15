@@ -5,6 +5,7 @@ namespace Order\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Order\Entity\Traits\CreatedDateTrait;
+use Order\Entity\Traits\PrimaryKeyTrait;
 
 /**
  * @ORM\Entity
@@ -13,13 +14,8 @@ use Order\Entity\Traits\CreatedDateTrait;
  */
 class Customer
 {
-    use CreatedDateTrait;
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
-    protected $id;
+    use PrimaryKeyTrait, CreatedDateTrait;
+
     /**
      * @ORM\Column(type="string")
      **/
@@ -39,14 +35,6 @@ class Customer
     public function __construct()
     {
         $this->orders = new ArrayCollection();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
