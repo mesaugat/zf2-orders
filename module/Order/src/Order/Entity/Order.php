@@ -22,9 +22,9 @@ class Order {
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="order_no")
      **/
-    protected $order_no;
+    protected $orderNumber;
 
     /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
@@ -32,9 +32,9 @@ class Order {
     protected $customer;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", name="grand_total")
      **/
-    protected $grand_total;
+    protected $grandTotal;
 
     /**
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order")
@@ -59,17 +59,17 @@ class Order {
     /**
      * @return int
      */
-    public function getOrderNo()
+    public function getOrderNumber()
     {
-        return $this->order_no;
+        return $this->orderNumber;
     }
 
     /**
-     * @param int $order_no
+     * @param int $orderNumber
      */
-    public function setOrderNo($order_no)
+    public function setOrderNumber($orderNumber)
     {
-        $this->order_no = $order_no;
+        $this->orderNumber = $orderNumber;
     }
 
     /**
@@ -77,15 +77,15 @@ class Order {
      */
     public function getGrandTotal()
     {
-        return $this->grand_total;
+        return $this->grandTotal;
     }
 
     /**
-     * @param float $grand_total
+     * @param float $grandTotal
      */
-    public function setGrandTotal($grand_total)
+    public function setGrandTotal($grandTotal)
     {
-        $this->grand_total = $grand_total;
+        $this->grandTotal = $grandTotal;
     }
 
     /**
