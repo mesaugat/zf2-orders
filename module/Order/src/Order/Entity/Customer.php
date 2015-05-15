@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="customers")
+ * @ORM\HasLifecycleCallbacks
  */
 class Customer
 {
@@ -35,7 +36,6 @@ class Customer
 
     /**
      * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
-     *
      * @var Order[]
      **/
     protected $orders = null;
@@ -78,11 +78,11 @@ class Customer
     }
 
     /**
-     * @param DateTime $created
+     * @ORM\PrePersist
      */
-    public function setCreated(DateTime $created)
+    public function setCreated()
     {
-        $this->created = $created;
+        $this->created = new DateTime();
     }
 
     /**

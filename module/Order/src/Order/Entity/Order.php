@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="orders")
+ * @ORM\HasLifecycleCallbacks
  */
-
 class Order {
     /**
      * @ORM\Id
@@ -115,11 +115,11 @@ class Order {
     }
 
     /**
-     * @param DateTime $created
+     * @ORM\PrePersist
      */
-    public function setCreated(DateTime $created)
+    public function setCreated()
     {
-        $this->created = $created;
+        $this->created = new DateTime();
     }
 
     /**

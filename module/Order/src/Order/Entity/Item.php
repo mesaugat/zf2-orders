@@ -6,11 +6,12 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ItemRepository")
  * @ORM\Table(name="items")
+ * @ORM\HasLifecycleCallbacks
  */
-
-class Item {
+class Item
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -63,11 +64,11 @@ class Item {
     }
 
     /**
-     * @param DateTime $created
+     * @ORM\PrePersist
      */
-    public function setCreated(DateTime $created)
+    public function setCreated()
     {
-        $this->created = $created;
+        $this->created = new DateTime();
     }
 
     /**
