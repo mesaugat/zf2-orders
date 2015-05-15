@@ -58,7 +58,6 @@ class ItemController extends Controller
 
         $title = 'Items';
 
-
         return new ViewModel(compact('title', 'items', 'links', 'total'));
     }
 
@@ -71,16 +70,12 @@ class ItemController extends Controller
             $this->form->setData($request->getPost());
 
             if ($this->form->isValid()) {
-                try {
-                    $data = $this->form->getData();
 
-                    $this->items->createNew($data);
+                $data = $this->form->getData();
 
-                    return $this->redirect()->toRoute('items');
-                } catch (\Exception $e) {
-                    // Some DB Error happened, log it and let the user know
-                    die($e->getMessage());
-                }
+                $this->items->createNew($data);
+
+                return $this->redirect()->toRoute('items');
             }
         }
 
@@ -108,5 +103,31 @@ class ItemController extends Controller
         }
 
         return compact('item');
+    }
+
+
+    public function editAction()
+    {
+        $id = $this->params('id');
+        $item = $this->items->find($id);
+
+        $this->form->bind($item);
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $this->form->setData($request->getPost());
+
+            if ($this->form->isValid()) {
+
+                $item = $this->form->getData();
+                $this->items->update($item);
+                return $this->redirect()->toRoute('items');
+            }
+        }
+
+        $form = $this->form;
+        $title = 'Edit Item';
+
+        return compact('form', 'title', 'item');
     }
 }

@@ -36,17 +36,9 @@ class ItemRepository extends Repository
         return $item;
     }
 
-    public function update($id, array $data)
+    public function update(Item $item)
     {
-        $item= $this->find($id);
-
-        $item->setName($data['name']);
-        $item->setRate($data['rate']);
-
-        $em = $this->getEntityManager();
-        $em->flush();
-
-        return $item;
+        $this->getEntityManager()->flush($item);
     }
 
     public function remove(Item $item)
