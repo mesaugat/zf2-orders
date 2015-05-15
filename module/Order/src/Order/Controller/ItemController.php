@@ -3,12 +3,14 @@
 
 namespace Order\Controller;
 
+use InvalidArgumentException;
 use Order\Form\ItemForm;
+use Order\Foundation\Exception\NotFoundException;
 use Zend\View\Model\ViewModel;
 use Order\Entity\ItemRepository;
-use Zend\Mvc\Controller\AbstractActionController;
+use Order\Foundation\AbstractController as Controller;
 
-class ItemController extends AbstractActionController
+class ItemController extends Controller
 {
     protected $form;
     protected $items;
@@ -28,7 +30,7 @@ class ItemController extends AbstractActionController
         $page = (int)$query->get('page', 1);
 
         if ($page < 1) {
-            throw new BadRequestException('Invalid page');
+            throw new InvalidArgumentException($this->translate('exception.invalid_page'));
         }
 
         $offset = ($page - 1) * $max;
@@ -39,7 +41,7 @@ class ItemController extends AbstractActionController
         $noOfPages = ceil($total / $max);
 
         if ($page > $noOfPages || $page < 1) {
-            throw new NotFoundException('Page Not Found');
+            throw new NotFoundException($this->translate('exception.page_not_found'));
         }
 
         $baseUri = $request->getUri()->getPath();
@@ -61,7 +63,6 @@ class ItemController extends AbstractActionController
 
     public function addAction()
     {
-
         $request = $this->getRequest();
 
         if ($request->isPost()) {
@@ -77,6 +78,7 @@ class ItemController extends AbstractActionController
                     return $this->redirect()->toRoute('items');
                 } catch (\Exception $e) {
                     // Some DB Error happened, log it and let the user know
+                    die($e->getMessage());
                 }
             }
         }

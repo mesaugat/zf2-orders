@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="ItemRepository")
  * @ORM\Table(name="items")
+ * @ORM\HasLifecycleCallbacks
  */
 class Item
 {
@@ -29,12 +30,6 @@ class Item
      * @ORM\Column(type="decimal")
      **/
     protected $rate;
-
-    public function __construct()
-    {
-        $this->created = new DateTime();
-    }
-
 
     /**
      * @return int
@@ -69,11 +64,11 @@ class Item
     }
 
     /**
-     * @param DateTime $created
+     * @ORM\PrePersist
      */
-    public function setCreated(DateTime $created)
+    public function setCreated()
     {
-        $this->created = $created;
+        $this->created = new DateTime();
     }
 
     /**

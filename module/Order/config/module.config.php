@@ -17,43 +17,49 @@ return [
             ]
         ]
     ],
-
     'controllers' => [
         'factories' => [
             'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
         ],
     ],
-
+    'translator' => [
+        'locale' => 'en_US',
+        'translation_file_patterns' => [
+            [
+                'type' => 'phparray',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.php',
+            ],
+        ],
+    ],
     // The following section is new and should be added to your file
     'router' => [
         'routes' => [
             'items' => [
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => [
-                    'route'    => '/items[/:action][/:id]',
+                    'route' => '/items[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[1-9]+',
+                        'id' => '[1-9]+',
                     ],
                     'defaults' => [
                         'controller' => 'Order\Controller\Item',
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
             ],
         ],
     ],
-
     'view_manager' => [
         'template_path_stack' => [
-            'order' => __DIR__.'/../view',
+            'order' => __DIR__ . '/../view',
         ],
     ],
-
     'view_helpers' => [
 
         'factories' => [
-            'common'    => function($pluginManager) {
+            'common' => function ($pluginManager) {
                 return new \Order\Helper\Common($pluginManager->getServiceLocator());
             }
         ]

@@ -3,12 +3,12 @@
 
 namespace Order\Entity;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Order\Foundation\AbstractRepository as Repository;
 
-class ItemRepository extends EntityRepository
+class ItemRepository extends Repository
 {
-    public function fetchList($offset = 0, $max = 10)
+    public function fetchList($offset = Repository::PAGINATION_OFFSET_START, $max = Repository::PAGINATION_MAX_ROWS)
     {
         $dql = 'SELECT i FROM Order\Entity\Item i ORDER BY i.created DESC';
 
@@ -22,6 +22,7 @@ class ItemRepository extends EntityRepository
 
         return $paginator;
     }
+
     public function createNew(array $data)
     {
         $item = new Item();
@@ -30,6 +31,19 @@ class ItemRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $em->persist($item);
+        $em->flush();
+
+        return $item;
+    }
+
+    public function update($id, array $data)
+    {
+        $item= $this->find($id);
+
+        $item->setName($data['name']);
+        $item->setRate($data['rate']);
+
+        $em = $this->getEntityManager();
         $em->flush();
 
         return $item;
