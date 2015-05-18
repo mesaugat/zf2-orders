@@ -1,6 +1,6 @@
 <?php
 
-namespace Order\Entity\Traits;
+namespace Foundation\Traits;
 
 
 trait ArraySerializableTrait

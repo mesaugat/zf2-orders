@@ -4,7 +4,7 @@
 namespace Order\Entity;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Order\Foundation\AbstractRepository as Repository;
+use Foundation\AbstractRepository as Repository;
 
 class ItemRepository extends Repository
 {

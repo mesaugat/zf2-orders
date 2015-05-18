@@ -3,7 +3,7 @@
 namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Order\Entity\Traits\PrimaryKeyTrait;
+use Foundation\Entity\Traits\PrimaryKeyTrait;
 
 /**
  * @ORM\Entity

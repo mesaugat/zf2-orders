@@ -8,6 +8,7 @@
     ],
     "autoload": {
         "psr-4":{
+            "Foundation\\" : "module/Foundation/src/",
             "Application\\" : "module/Application/src/",
             "Order\\" : "module/Order/src/"
         }

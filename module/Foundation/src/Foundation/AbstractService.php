@@ -1,10 +1,8 @@
 <?php
 
+namespace Foundation;
 
-namespace Order\Foundation;
-
-
-use Order\Foundation\Traits\TranslatorAwareTrait;
+use Foundation\Traits\TranslatorAwareTrait;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;

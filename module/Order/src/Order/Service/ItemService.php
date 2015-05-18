@@ -6,8 +6,8 @@ namespace Order\Service;
 use InvalidArgumentException;
 use Order\Entity\Item;
 use Order\Entity\ItemRepository;
-use Order\Foundation\AbstractService;
-use Order\Foundation\Exception\NotFoundException;
+use Foundation\AbstractService;
+use Foundation\Exception\NotFoundException;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
