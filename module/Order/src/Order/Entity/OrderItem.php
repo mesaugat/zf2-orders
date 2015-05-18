@@ -2,7 +2,6 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Order\Entity\Traits\PrimaryKeyTrait;
 

@@ -4,9 +4,11 @@
 namespace Order\Service;
 
 use InvalidArgumentException;
+use Order\Entity\Item;
 use Order\Entity\ItemRepository;
 use Order\Foundation\AbstractService;
 use Order\Foundation\Exception\NotFoundException;
+use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ItemService extends AbstractService
@@ -21,10 +23,44 @@ class ItemService extends AbstractService
     }
 
 
-    public  function createNew() {
+    /**
+     * @param Form $form
+     * @param $data
+     * @return bool
+     */
+    public function createNew(Form $form, $data)
+    {
+        $form->setData($data);
 
+        if ($form->isValid()) {
+            $this->repository->createNew($form->getData());
+
+            return true;
+        }
+
+        return false;
     }
 
+    public function update(Form $form, $data)
+    {
+        $form->setData($data);
+        if ($form->isValid()) {
+            $item = $form->getData();
+            $this->repository->update($item);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @param $baseUri
+     * @param $query
+     * @return array
+     * @throws NotFoundException
+     */
     public function fetchList($baseUri, $query)
     {
         $max = (int)$query->get('max', 10);
@@ -57,5 +93,17 @@ class ItemService extends AbstractService
         }
 
         return compact('title', 'items', 'links', 'total');
+    }
+
+
+    /**
+     * @param Item $item
+     * @return bool
+     */
+    public function remove(Item $item)
+    {
+        $this->repository->remove($item);
+
+        return true;
     }
 }
