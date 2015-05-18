@@ -45,7 +45,7 @@ class ItemController extends Controller
 
     public function editAction()
     {
-        $item = $this->items->find($this->params('id'));
+        $item = $this->service->fetch($this->params('id'));
 
         $this->form->bind($item);
         $request = $this->getRequest();
@@ -64,7 +64,7 @@ class ItemController extends Controller
 
     public function deleteAction()
     {
-        $item = $this->items->find($this->params('id'));
+        $item = $this->service->fetch($this->params('id'));
         $request = $this->getRequest();
 
         if ($request->isPost()) {
