@@ -63,7 +63,7 @@ class ItemService extends AbstractService
      */
     public function fetchList($baseUri, $query)
     {
-        $max = (int)$query->get('max', 10);
+        $max = (int)$query->get('max', ItemRepository::PAGINATION_MAX_ROWS);
         $page = (int)$query->get('page', 1);
 
         if ($page < 1) {
@@ -83,16 +83,20 @@ class ItemService extends AbstractService
             }
         }
 
+        $pageLink = function($page) use($baseUri, $query) {
+            return $baseUri . '?' . http_build_query($query->set('page', $page)->toArray());
+        };
+
         $links = [];
         if ($page > 1) {
-            $links['prev'] = $baseUri . '?' . http_build_query($query->set('page', $page - 1)->toArray());
+            $links['prev'] = $pageLink($page - 1);
         }
 
         if ($page < $noOfPages) {
-            $links['next'] = $baseUri . '?' . http_build_query($query->set('page', $page + 1)->toArray());
+            $links['next'] = $pageLink($page + 1);
         }
 
-        return compact('title', 'items', 'links', 'total');
+        return compact('title', 'items', 'links', 'total', 'noOfPages', 'pageLink', 'page');
     }
 
 

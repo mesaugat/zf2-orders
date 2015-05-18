@@ -6,6 +6,35 @@
         <?php if (empty($items)): ?>
             <div class="alert alert-info"><?php echo $this->translate('no_items') ?></div>
         <?php else: ?>
+            <div>
+                Total Records: <?php echo $total ?>
+            </div>
+            <?php if ($noOfPages > 1): ?>
+                <nav>
+                    <ul class="pagination">
+                        <?php if (isset($links['prev'])): ?>
+                            <li>
+                                <a href="<?php echo $links['prev'] ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($p = 1; $p <= $noOfPages; $p++): ?>
+                            <li class="<?php echo $p == $page ? 'active' : '' ?>"><a
+                                    href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a></li>
+                        <?php endfor; ?>
+
+                        <?php if (isset($links['next'])): ?>
+                            <li>
+                                <a href="<?php echo $links['next'] ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            <?php endif; ?>
             <table class="table">
                 <tr>
                     <th>ID</th>
