@@ -15,7 +15,20 @@ return [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
             ]
-        ]
+        ],
+        'configuration' => [
+            'orm_default' => [
+                'naming_strategy' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy'
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory'
+        ],
+        'invokables' => [
+            'Doctrine\ORM\Mapping\UnderscoreNamingStrategy' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
+        ],
     ],
     'controllers' => [
         'factories' => [
@@ -41,7 +54,7 @@ return [
                     'route' => '/items[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[1-9]+',
+                        'id' => '\d+',
                     ],
                     'defaults' => [
                         'controller' => 'Order\Controller\Item',

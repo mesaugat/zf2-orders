@@ -2,8 +2,9 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Order\Entity\Traits\CreatedDateTrait;
+use Order\Entity\Traits\PrimaryKeyTrait;
 
 /**
  * @ORM\Entity
@@ -11,22 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks
  */
 class Order {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
-    protected $id;
+
+    use PrimaryKeyTrait, CreatedDateTrait;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="order_no")
      **/
-    protected $order_no;
-
-    /**
-     * @ORM\Column(type="datetime")
-     **/
-    protected $created;
+    protected $orderNumber;
 
     /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
@@ -34,9 +26,9 @@ class Order {
     protected $customer;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", name="grand_total")
      **/
-    protected $grand_total;
+    protected $grandTotal;
 
     /**
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order")
@@ -53,25 +45,17 @@ class Order {
     /**
      * @return int
      */
-    public function getId()
+    public function getOrderNumber()
     {
-        return $this->id;
+        return $this->orderNumber;
     }
 
     /**
-     * @return int
+     * @param int $orderNumber
      */
-    public function getOrderNo()
+    public function setOrderNumber($orderNumber)
     {
-        return $this->order_no;
-    }
-
-    /**
-     * @param int $order_no
-     */
-    public function setOrderNo($order_no)
-    {
-        $this->order_no = $order_no;
+        $this->orderNumber = $orderNumber;
     }
 
     /**
@@ -79,15 +63,15 @@ class Order {
      */
     public function getGrandTotal()
     {
-        return $this->grand_total;
+        return $this->grandTotal;
     }
 
     /**
-     * @param float $grand_total
+     * @param float $grandTotal
      */
-    public function setGrandTotal($grand_total)
+    public function setGrandTotal($grandTotal)
     {
-        $this->grand_total = $grand_total;
+        $this->grandTotal = $grandTotal;
     }
 
     /**
@@ -104,22 +88,6 @@ class Order {
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreated()
-    {
-        $this->created = new DateTime();
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Order\Entity\Traits\PrimaryKeyTrait;
 
 /**
  * @ORM\Entity
@@ -11,13 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderItem
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
-    protected $id;
-
+    use PrimaryKeyTrait;
     /**
      * @ORM\Column(type="integer")
      **/
@@ -29,9 +23,9 @@ class OrderItem
     protected $rate;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", name="line_total")
      **/
-    protected $line_total;
+    protected $lineTotal;
 
     /**
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderItems")
@@ -42,14 +36,6 @@ class OrderItem
      * @ORM\ManyToOne(targetEntity="Item")
      **/
     protected $item;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @return int
@@ -88,9 +74,9 @@ class OrderItem
      */
     public function getLineTotal()
     {
-        $this->line_total = $this->rate * $this->quantity;
+        $this->lineTotal = $this->rate * $this->quantity;
 
-        return $this->line_total;
+        return $this->lineTotal;
     }
 
     /**

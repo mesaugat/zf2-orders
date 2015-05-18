@@ -8,7 +8,10 @@ use Order\Foundation\AbstractRepository as Repository;
 
 class ItemRepository extends Repository
 {
-    public function fetchList($offset = Repository::PAGINATION_OFFSET_START, $max = Repository::PAGINATION_MAX_ROWS)
+    const PAGINATION_MAX_ROWS = 5;
+    const PAGINATION_OFFSET_START = 0;
+
+    public function fetchList($offset = self::PAGINATION_OFFSET_START, $max = self::PAGINATION_MAX_ROWS)
     {
         $dql = 'SELECT i FROM Order\Entity\Item i ORDER BY i.created DESC';
 
@@ -36,17 +39,9 @@ class ItemRepository extends Repository
         return $item;
     }
 
-    public function update($id, array $data)
+    public function update(Item $item)
     {
-        $item= $this->find($id);
-
-        $item->setName($data['name']);
-        $item->setRate($data['rate']);
-
-        $em = $this->getEntityManager();
-        $em->flush();
-
-        return $item;
+        $this->getEntityManager()->flush($item);
     }
 
     public function remove(Item $item)

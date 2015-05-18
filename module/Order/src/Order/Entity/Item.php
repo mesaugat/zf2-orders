@@ -2,42 +2,30 @@
 
 namespace Order\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Order\Entity\Traits\ArraySerializableTrait;
+use Order\Entity\Traits\CreatedDateTrait;
+use Order\Entity\Traits\PrimaryKeyTrait;
+use Zend\Stdlib\ArraySerializableInterface;
 
 /**
  * @ORM\Entity(repositoryClass="ItemRepository")
  * @ORM\Table(name="items")
  * @ORM\HasLifecycleCallbacks
  */
-class Item
+class Item implements ArraySerializableInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
-    protected $id;
+    use PrimaryKeyTrait, CreatedDateTrait;
+
+    use ArraySerializableTrait;
     /**
      * @ORM\Column(type="string")
      **/
     protected $name;
     /**
-     * @ORM\Column(type="datetime")
-     **/
-    protected $created;
-    /**
      * @ORM\Column(type="decimal")
      **/
     protected $rate;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @return string
@@ -56,22 +44,6 @@ class Item
     }
 
     /**
-     * @return DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreated()
-    {
-        $this->created = new DateTime();
-    }
-
-    /**
      * @return float
      */
     public function getRate()
@@ -86,5 +58,4 @@ class Item
     {
         $this->rate = $rate;
     }
-
 }
