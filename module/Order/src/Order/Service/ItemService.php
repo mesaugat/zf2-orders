@@ -83,7 +83,7 @@ class ItemService extends AbstractService
             }
         }
 
-        $pageLink = function($page) use($baseUri, $query) {
+        $pageLink = function ($page) use ($baseUri, $query) {
             return $baseUri . '?' . http_build_query($query->set('page', $page)->toArray());
         };
 
@@ -113,6 +113,11 @@ class ItemService extends AbstractService
 
     public function fetch($id)
     {
-        return $this->repository->find($id);
+        $item = $this->repository->find($id);
+        if ($item === null) {
+            throw new NotFoundException($this->translate('exception.item_not_found'));
+        }
+
+        return $item;
     }
 }
