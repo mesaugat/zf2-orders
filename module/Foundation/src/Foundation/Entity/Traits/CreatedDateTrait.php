@@ -1,6 +1,6 @@
 <?php
 
-namespace Order\Entity\Traits;
+namespace Foundation\Entity\Traits;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;

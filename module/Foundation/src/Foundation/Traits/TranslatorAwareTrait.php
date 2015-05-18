@@ -1,10 +1,8 @@
 <?php
 
-
-namespace Order\Foundation\Traits;
+namespace Foundation\Traits;
 
 use Zend\I18n\Translator\TranslatorAwareTrait as ZendTranslatorAwareTrait;
-
 
 trait TranslatorAwareTrait
 {

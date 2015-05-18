@@ -1,10 +1,8 @@
 <?php
 
+namespace Foundation;
 
-namespace Order\Foundation;
-
-
-use Order\Foundation\Traits\TranslatorAwareTrait;
+use Foundation\Traits\TranslatorAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -17,7 +15,7 @@ abstract class AbstractController extends AbstractActionController
     {
         parent::setServiceLocator($serviceLocator);
 
-        if($serviceLocator instanceof ControllerManager) {
+        if ($serviceLocator instanceof ControllerManager) {
             $serviceLocator = $serviceLocator->getServiceLocator();
         }
 

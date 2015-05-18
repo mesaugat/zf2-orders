@@ -3,9 +3,9 @@
 namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Order\Entity\Traits\ArraySerializableTrait;
-use Order\Entity\Traits\CreatedDateTrait;
-use Order\Entity\Traits\PrimaryKeyTrait;
+use Foundation\Traits\ArraySerializableTrait;
+use Foundation\Entity\Traits\CreatedDateTrait;
+use Foundation\Entity\Traits\PrimaryKeyTrait;
 use Zend\Stdlib\ArraySerializableInterface;
 
 /**

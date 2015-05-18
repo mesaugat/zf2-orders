@@ -6,7 +6,7 @@ namespace Order\Controller;
 use Order\Form\ItemForm;
 use Order\Service\ItemService;
 use Zend\View\Model\ViewModel;
-use Order\Foundation\AbstractController as Controller;
+use Foundation\AbstractController as Controller;
 
 class ItemController extends Controller
 {

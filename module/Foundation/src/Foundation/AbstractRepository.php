@@ -1,8 +1,6 @@
 <?php
 
-
-namespace Order\Foundation;
-
+namespace Foundation;
 
 use Doctrine\ORM\EntityRepository;
 
