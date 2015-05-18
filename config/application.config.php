@@ -5,6 +5,9 @@ $env = getenv('APPLICATION_ENV') ?: 'production';
 $modules = array(
     'DoctrineModule',
     'DoctrineORMModule',
+    'ZfcBase',
+    'ZfcUser',
+    'ZfcUserDoctrineORM',
     'Foundation',
     'Application',
     'Order',

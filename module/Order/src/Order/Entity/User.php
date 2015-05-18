@@ -5,20 +5,21 @@ namespace Order\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
+use ZfcUser\Entity\UserInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
  */
-class User
+class User implements UserInterface
 {
     use PrimaryKeyTrait, CreatedDateTrait;
 
     /**
      * @ORM\Column(type="string")
      **/
-    protected $fullName;
+    protected $displayName;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -36,19 +37,52 @@ class User
     protected $email;
 
     /**
-     * @return string
+     * @ORM\Column(type="integer")
+     **/
+    protected $state;
+
+    /**
+     * Set id.
+     *
+     * @param int $id
+     * @return UserInterface
      */
-    public function getFullName()
+    public function setId($id)
     {
-        return $this->fullName;
+        $this->id = $id;
     }
 
     /**
-     * @param string $fullName
+     * @return string
      */
-    public function setFullName($fullName)
+    public function getDisplayName()
     {
-        $this->fullName = $fullName;
+        return $this->displayName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+
+    /**
+     * @param int $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @param string $displayName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
     }
 
     /**
