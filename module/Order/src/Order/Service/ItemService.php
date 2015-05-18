@@ -110,4 +110,9 @@ class ItemService extends AbstractService
 
         return true;
     }
+
+    public function fetch($id)
+    {
+        return $this->repository->find($id);
+    }
 }
