@@ -23,7 +23,7 @@ class Item implements ArraySerializableInterface
      **/
     protected $name;
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=15, scale=2)
      **/
     protected $rate;
 
@@ -44,7 +44,7 @@ class Item implements ArraySerializableInterface
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getRate()
     {
@@ -52,7 +52,7 @@ class Item implements ArraySerializableInterface
     }
 
     /**
-     * @param float $rate
+     * @param string $rate
      */
     public function setRate($rate)
     {
