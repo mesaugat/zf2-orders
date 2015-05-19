@@ -28,6 +28,7 @@ class ItemRepository extends Repository
 
     public function createNew(array $data)
     {
+
         $item = new Item();
         $item->setName($data['name']);
         $item->setRate($data['rate']);
