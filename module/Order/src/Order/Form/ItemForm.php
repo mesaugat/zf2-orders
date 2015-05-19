@@ -87,7 +87,12 @@ class ItemForm extends Form
         $filter->add([
             'name' => 'rate',
             'required' => true,
+            'filters' => [
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
+            ],
         ]);
+
         return $filter;
     }
 }
