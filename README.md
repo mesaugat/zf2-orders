@@ -1,5 +1,6 @@
 ZendOrdersApplication
 =======================
+[![Code Climate](https://codeclimate.com/github/mesaugat/zf2-orders/badges/gpa.svg)](https://codeclimate.com/github/mesaugat/zf2-orders)
 
 Introduction
 ------------
