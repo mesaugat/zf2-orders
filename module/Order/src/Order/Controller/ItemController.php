@@ -2,19 +2,16 @@
 
 namespace Order\Controller;
 
-use Order\Form\ItemForm;
 use Order\Service\ItemService;
 use Zend\View\Model\ViewModel;
 use Foundation\AbstractController as Controller;
 
 class ItemController extends Controller
 {
-    protected $form;
     protected $service;
 
-    public function __construct(ItemForm $form, ItemService $service)
+    public function __construct(ItemService $service)
     {
-        $this->form = $form;
         $this->service = $service;
     }
 
@@ -32,30 +29,30 @@ class ItemController extends Controller
     {
         $request = $this->getRequest();
 
-        if ($request->isPost() && $this->service->createNew($this->form, $request->getPost())) {
+        if ($request->isPost() && $this->service->createNew($request->getPost())) {
             return $this->redirect()->toRoute('items');
         }
 
         return [
             'title' => 'Create New Item',
-            'form' => $this->form,
+            'form' => $this->service->getForm(),
         ];
     }
 
     public function editAction()
     {
         $item = $this->service->fetch($this->params('id'));
-
-        $this->form->bind($item);
         $request = $this->getRequest();
 
-        if ($request->isPost() && $this->service->update($this->form, $request->getPost())) {
+        $this->service->bindToForm($item);
+
+        if ($request->isPost() && $this->service->update($request->getPost())) {
             return $this->redirect()->toRoute('items');
         }
 
         return [
             'title' => 'Edit Item',
-            'form' => $this->form,
+            'form' => $this->service->getForm(),
             'item' => $item
         ];
     }
