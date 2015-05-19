@@ -208,11 +208,18 @@ $settings = [
     /**
      * User table name
      */
-    'table_name' => 'sdfsdfsd',
+//    'table_name' => 'user',
+
+    /**
+     * Disable default entities & tables
+     */
+    'enable_default_entities'   => false,
 
     /**
      * End of ZfcUser configuration
      */
+
+
 ];
 
 /**
