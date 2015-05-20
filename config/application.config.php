@@ -1,8 +1,10 @@
 <?php
-
+/**
+ * Application Configuration File
+ */
 $env = getenv('APPLICATION_ENV') ?: 'production';
 
-$modules = array(
+$modules = [
     'DoctrineModule',
     'DoctrineORMModule',
     'ZfcBase',
@@ -11,21 +13,21 @@ $modules = array(
     'Foundation',
     'Application',
     'Order',
-);
+];
 
-if($env === 'development') {
+if ($env === 'development') {
     $modules[] = 'ZendDeveloperTools';
 }
 
-return array(
+return [
     'modules' => $modules,
-    'module_listener_options' => array(
-        'module_paths' => array(
+    'module_listener_options' => [
+        'module_paths' => [
             './module',
             './vendor',
-        ),
-        'config_glob_paths' => array(
+        ],
+        'config_glob_paths' => [
             'config/autoload/{,*.}{global,local}.php',
-        ),
-    ),
-);
+        ],
+    ],
+];
