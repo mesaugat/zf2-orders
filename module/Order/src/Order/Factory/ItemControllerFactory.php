@@ -21,9 +21,8 @@ class ItemControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $sm = $serviceLocator->getServiceLocator();
-        $form = new ItemForm('item-form');
         $service = $sm->get('Order\Service\ItemService');
 
-        return new ItemController($form, $service);
+        return new ItemController($service);
     }
 }

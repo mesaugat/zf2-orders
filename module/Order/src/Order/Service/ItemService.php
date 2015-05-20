@@ -8,32 +8,34 @@ use Order\Entity\Item;
 use Order\Entity\ItemRepository;
 use Foundation\AbstractService;
 use Foundation\Exception\NotFoundException;
+use Order\Form\ItemForm;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ItemService extends AbstractService
 {
+    protected $form;
     protected $repository;
 
-    public function __construct(ServiceLocatorInterface $serviceManager, ItemRepository $repository)
+    public function __construct(ServiceLocatorInterface $serviceManager, ItemRepository $repository, ItemForm $form)
     {
         parent::__construct($serviceManager);
 
         $this->repository = $repository;
+        $this->form = $form;
     }
 
 
     /**
-     * @param Form $form
      * @param $data
      * @return bool
      */
-    public function createNew(Form $form, $data)
+    public function createNew($data)
     {
-        $form->setData($data);
+        $this->form->setData($data);
 
-        if ($form->isValid()) {
-            $this->repository->createNew($form->getData());
+        if ($this->form->isValid()) {
+            $this->repository->createNew($this->form->getData());
 
             return true;
         }
@@ -41,11 +43,16 @@ class ItemService extends AbstractService
         return false;
     }
 
-    public function update(Form $form, $data)
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function update($data)
     {
-        $form->setData($data);
-        if ($form->isValid()) {
-            $item = $form->getData();
+        $this->form->setData($data);
+
+        if ($this->form->isValid()) {
+            $item = $this->form->getData();
             $this->repository->update($item);
 
             return true;
@@ -111,6 +118,11 @@ class ItemService extends AbstractService
         return true;
     }
 
+    /**
+     * @param $id
+     * @return Item
+     * @throws NotFoundException
+     */
     public function fetch($id)
     {
         $item = $this->repository->find($id);
@@ -119,5 +131,18 @@ class ItemService extends AbstractService
         }
 
         return $item;
+    }
+
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * @param Item $item
+     */
+    public function bindToForm(Item $item)
+    {
+        $this->form->bind($item);
     }
 }
