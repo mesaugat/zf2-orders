@@ -15,4 +15,7 @@ languages:
 # http://docs.codeclimate.com/article/166-excluding-files-folders
 #
 exclude_paths:
-- "public/js/bootstrap.js"
+  - "public/js/bootstrap.js"
+  - "tests/acceptance/AcceptanceTester.php"
+  - "tests/functional/FunctionalTester.php"
+  - "tests/unit/UnitTester.php"
