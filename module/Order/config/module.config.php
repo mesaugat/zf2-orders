@@ -2,6 +2,8 @@
 
 namespace Order;
 
+use Order\Service\ItemService;
+
 return [
     'doctrine' => [
         'driver' => [
@@ -51,7 +53,7 @@ return [
             'items' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => '/items[/:action][/:id]',
+                    'route' => ItemService::LIST_BASE_URI . '[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '\d+',
@@ -68,13 +70,5 @@ return [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',
         ],
-    ],
-    'view_helpers' => [
-
-        'factories' => [
-            'common' => function ($pluginManager) {
-                return new \Order\Helper\Common($pluginManager->getServiceLocator());
-            }
-        ]
     ]
 ];
