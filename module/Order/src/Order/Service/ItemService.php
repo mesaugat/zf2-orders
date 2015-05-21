@@ -14,6 +14,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ItemService extends AbstractService
 {
+    const PAGINATION_MAX_ROWS = 5;
+
     protected $form;
     protected $repository;
 
@@ -70,7 +72,7 @@ class ItemService extends AbstractService
      */
     public function fetchList($baseUri, $query)
     {
-        $max = (int)$query->get('max', ItemRepository::PAGINATION_MAX_ROWS);
+        $max = (int)$query->get('max', self::PAGINATION_MAX_ROWS);
         $page = (int)$query->get('page', 1);
 
         if ($page < 1) {
