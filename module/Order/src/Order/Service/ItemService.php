@@ -9,7 +9,6 @@ use Order\Entity\ItemRepository;
 use Foundation\AbstractService;
 use Foundation\Exception\NotFoundException;
 use Order\Form\ItemForm;
-use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ItemService extends AbstractService
@@ -37,9 +36,9 @@ class ItemService extends AbstractService
         $this->form->setData($data);
 
         if ($this->form->isValid()) {
-            $this->repository->createNew($this->form->getData());
+            $item = $this->repository->createNew($this->form->getData());
 
-            return true;
+            return ($item instanceof Item);
         }
 
         return false;
