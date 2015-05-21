@@ -10,6 +10,7 @@ use Foundation\AbstractService;
 use Foundation\Exception\NotFoundException;
 use Order\Form\ItemForm;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\Parameters;
 
 class ItemService extends AbstractService
 {
@@ -25,7 +26,6 @@ class ItemService extends AbstractService
         $this->repository = $repository;
         $this->form = $form;
     }
-
 
     /**
      * @param $data
@@ -45,11 +45,24 @@ class ItemService extends AbstractService
     }
 
     /**
+     * @param Item $item
+     */
+    public function bindToForm(Item $item)
+    {
+        $this->form->bind($item);
+    }
+
+    /**
      * @param $data
      * @return bool
+     * @throws \Exception
      */
     public function update($data)
     {
+        if (!($this->form->getObject() instanceof Item)) {
+            throw new \Exception($this->translate('exception.form_not_bound'));
+        }
+
         $this->form->setData($data);
 
         if ($this->form->isValid()) {
@@ -65,11 +78,11 @@ class ItemService extends AbstractService
 
     /**
      * @param $baseUri
-     * @param $query
+     * @param Parameters $query
      * @return array
      * @throws NotFoundException
      */
-    public function fetchList($baseUri, $query)
+    public function fetchList($baseUri, Parameters $query)
     {
         $max = (int)$query->get('max', self::PAGINATION_MAX_ROWS);
         $page = (int)$query->get('page', 1);
@@ -107,7 +120,6 @@ class ItemService extends AbstractService
         return compact('title', 'items', 'links', 'total', 'noOfPages', 'pageLink', 'page');
     }
 
-
     /**
      * @param Item $item
      * @return bool
@@ -137,13 +149,5 @@ class ItemService extends AbstractService
     public function getForm()
     {
         return $this->form;
-    }
-
-    /**
-     * @param Item $item
-     */
-    public function bindToForm(Item $item)
-    {
-        $this->form->bind($item);
     }
 }
