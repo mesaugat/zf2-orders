@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Doctrine module CLI tool for Testing environment
+ */
+
+use Zend\Mvc\Application;
+
+ini_set('display_errors', true);
+chdir(__DIR__.'/../');
+
+include_once 'init_autoloader.php';
+
+$application = Application::init(include __DIR__.'/application.config.php');
+
+/* @var $cli \Symfony\Component\Console\Application */
+$cli = $application->getServiceManager()->get('doctrine.cli');
+exit($cli->run());

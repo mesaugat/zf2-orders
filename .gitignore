@@ -9,5 +9,5 @@ nbproject
 codeception.yml
 composer.lock
 /vendor
-
+config/autoload/*.testing.php
 tests/_output/*

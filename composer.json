@@ -20,7 +20,8 @@
         "doctrine/doctrine-orm-module": "^0.9.0",
         "doctrine/migrations": "dev-master",
         "symfony/var-dumper": "^2.6",
-        "zf-commons/zfc-user-doctrine-orm": "^1.0"
+        "zf-commons/zfc-user-doctrine-orm": "^1.0",
+        "fzaninotto/faker": "^1.4"
     },
     "require-dev": {
         "zendframework/zend-developer-tools": "dev-master",
