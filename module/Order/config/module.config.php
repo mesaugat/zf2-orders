@@ -35,7 +35,6 @@ return [
     'controllers' => [
         'factories' => [
             'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
-            'Order\Controller\Role' => 'Order\Factory\RoleControllerFactory',
         ],
     ],
     'translator' => [
