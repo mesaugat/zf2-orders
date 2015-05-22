@@ -2,10 +2,7 @@
 
 namespace Order\Factory;
 
-
 use Order\Controller\ItemController;
-use Order\Form\ItemForm;
-use Order\Service\ItemService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
