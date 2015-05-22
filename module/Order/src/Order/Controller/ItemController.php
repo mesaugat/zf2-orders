@@ -17,9 +17,7 @@ class ItemController extends Controller
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-
-        $data = $this->service->fetchList($request->getUri()->getPath(), $request->getQuery());
+        $data = $this->service->fetchList($this->getRequest()->getQuery());
         $data['title'] = 'Items';
 
         return new ViewModel($data);

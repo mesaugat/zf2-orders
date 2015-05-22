@@ -9,12 +9,13 @@ use Order\Entity\ItemRepository;
 use Foundation\AbstractService;
 use Foundation\Exception\NotFoundException;
 use Order\Form\ItemForm;
-use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\Parameters;
 
 class ItemService extends AbstractService
 {
     const PAGINATION_MAX_ROWS = 5;
+    const LIST_BASE_URI = '/items';
 
     protected $form;
     protected $repository;
@@ -27,7 +28,6 @@ class ItemService extends AbstractService
         $this->form = $form;
     }
 
-
     /**
      * @param $data
      * @return bool
@@ -37,20 +37,33 @@ class ItemService extends AbstractService
         $this->form->setData($data);
 
         if ($this->form->isValid()) {
-            $this->repository->createNew($this->form->getData());
+            $item = $this->repository->createNew($this->form->getData());
 
-            return true;
+            return ($item instanceof Item);
         }
 
         return false;
     }
 
     /**
+     * @param Item $item
+     */
+    public function bindToForm(Item $item)
+    {
+        $this->form->bind($item);
+    }
+
+    /**
      * @param $data
      * @return bool
+     * @throws \Exception
      */
     public function update($data)
     {
+        if (!($this->form->getObject() instanceof Item)) {
+            throw new \Exception($this->translate('exception.form_not_bound'));
+        }
+
         $this->form->setData($data);
 
         if ($this->form->isValid()) {
@@ -65,12 +78,11 @@ class ItemService extends AbstractService
 
 
     /**
-     * @param $baseUri
-     * @param $query
+     * @param Parameters $query
      * @return array
      * @throws NotFoundException
      */
-    public function fetchList($baseUri, $query)
+    public function fetchList(Parameters $query)
     {
         $max = (int)$query->get('max', self::PAGINATION_MAX_ROWS);
         $page = (int)$query->get('page', 1);
@@ -84,7 +96,7 @@ class ItemService extends AbstractService
         $list = $this->repository->fetchList($offset, $max);
         $items = $list->getIterator()->getArrayCopy();
         $total = $list->count();
-        $noOfPages = ceil($total / $max);
+        $noOfPages = (int)(ceil($total / $max)) ?: 1;
 
         if ($total > 0) {
             if ($page > $noOfPages || $page < 1) {
@@ -92,8 +104,8 @@ class ItemService extends AbstractService
             }
         }
 
-        $pageLink = function ($page) use ($baseUri, $query) {
-            return $baseUri . '?' . http_build_query($query->set('page', $page)->toArray());
+        $pageLink = function ($page) use ($query) {
+            return self::LIST_BASE_URI . '?' . http_build_query($query->set('page', $page)->toArray());
         };
 
         $links = [];
@@ -105,9 +117,8 @@ class ItemService extends AbstractService
             $links['next'] = $pageLink($page + 1);
         }
 
-        return compact('title', 'items', 'links', 'total', 'noOfPages', 'pageLink', 'page');
+        return compact('items', 'links', 'total', 'noOfPages', 'pageLink', 'page');
     }
-
 
     /**
      * @param Item $item
@@ -138,13 +149,5 @@ class ItemService extends AbstractService
     public function getForm()
     {
         return $this->form;
-    }
-
-    /**
-     * @param Item $item
-     */
-    public function bindToForm(Item $item)
-    {
-        $this->form->bind($item);
     }
 }
