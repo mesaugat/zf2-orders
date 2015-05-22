@@ -21,7 +21,8 @@ class ItemServiceFactory implements FactoryInterface
     {
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Order\Entity\Item');
-        $form = new ItemForm('item-form', new ItemFilter());
+        $translator = $serviceLocator->get('translator');
+        $form = new ItemForm('item-form', new ItemFilter($translator));
 
         return new ItemService($serviceLocator, $repository, $form);
     }
