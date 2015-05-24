@@ -11,16 +11,18 @@ settings:
 modules:
     config:
         Db:
-            dsn: ''
-            user: ''
-            password: ''
+            dsn: 'pgsql:host=localhost;dbname=DATABASE_NAME_HERE'
+            user: 'USERNAME_HERE'
+            password: 'PASSWORD_HERE'
             dump: tests/_data/dump.sql
+            cleanup: false
+            populate: false
 env:
     development:
         modules:
             config:
                 Db:
-                    dsn: 'pgsql:host=localhost;dbname='
+                    dsn: ''
                     user: ''
                     password: ''
                     dump: tests/_data/dump.sql

@@ -1,6 +1,8 @@
 ZendOrdersApplication
 =======================
+
 [![Code Climate](https://codeclimate.com/github/mesaugat/zf2-orders/badges/gpa.svg)](https://codeclimate.com/github/mesaugat/zf2-orders)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/9487a85f-d66b-4ba5-9538-8b3fcf1c4c22/mini.png)](https://insight.sensiolabs.com/projects/9487a85f-d66b-4ba5-9538-8b3fcf1c4c22)
 
 Introduction
 ------------
@@ -55,3 +57,21 @@ project and you should be ready to go! It should look something like below:
             Allow from all
         </Directory>
     </VirtualHost>
+
+If you are using apache make a copy of `public/.htaccess.example` as `.htaccess`
+
+Tests
+------------
+
+### Configuration Files
+
+Make a copy of .example configuration files located at:
+
+	cp config/autoload/doctrine.testing.php.example config/autoload/doctrine.testing.php
+	cp tests/codeception.yml.example tests/codeception.yml
+
+Fill in the required credentials for the test database. It is **recommended** to use a test database rather than the same database.
+
+### Running Tests
+
+From the root of the directory `vendor/bin/codecept run`. For further information on running specific tests look at [Codeception docs](http://codeception.com/docs/02-GettingStarted).
