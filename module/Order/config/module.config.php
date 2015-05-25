@@ -48,39 +48,7 @@ return [
         ],
     ],
     // The following section is new and should be added to your file
-    'router' => [
-        'routes' => [
-            'items' => [
-                'type' => 'segment',
-                'options' => [
-                    'route' => '/items[/:action][/:id]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '\d+',
-                    ],
-                    'defaults' => [
-                        'controller' => 'Order\Controller\Item',
-                        'action' => 'index',
-                    ],
-                ],
-            ],
-            'roles' => [
-                'type' => 'segment',
-                'options' => [
-                    'route' => '/roles[/:action][/:id]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '\d+',
-
-                    ],
-                    'defaults' => [
-                        'controller' => 'Order\Controller\Role',
-                        'action' => 'index',
-                    ],
-                ],
-            ],
-        ],
-    ],
+    'router' => require __DIR__ . '/router.config.php',
     'view_manager' => [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',
