@@ -9,7 +9,7 @@ use Foundation\Entity\Traits\PrimaryKeyTrait;
 use Zend\Stdlib\ArraySerializableInterface;
 
 /**
- * @ORM\Entity(repositoryClass="ItemRepository")
+ * @ORM\Entity(repositoryClass="Order\Entity\Repository\ItemRepository")
  * @ORM\Table(name="items")
  * @ORM\HasLifecycleCallbacks
  */

@@ -1,8 +1,8 @@
 <?php
 
+namespace Order\Entity\Repository;
 
-namespace Order\Entity;
-
+use Order\Entity\Role;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
 
 class RoleRepository extends CrudRepository
@@ -15,6 +15,7 @@ class RoleRepository extends CrudRepository
     {
         $object = new Role();
         $object->setRoleId($data['role_id']);
+
 //        $object->setParent($data['parent_id']);
 
         return $object;

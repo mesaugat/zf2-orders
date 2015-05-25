@@ -14,7 +14,7 @@ class ItemRepositoryTest extends \Codeception\TestCase\Test
     protected $tester;
 
     /**
-     * @var \Order\Entity\ItemRepository
+     * @var \Order\Entity\Repository\ItemRepository
      */
     protected $repository;
 

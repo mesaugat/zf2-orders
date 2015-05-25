@@ -11,7 +11,7 @@ use Zend\Stdlib\ArraySerializableInterface;
 
 /**
  *
- * @ORM\Entity(repositoryClass="RoleRepository")
+ * @ORM\Entity(repositoryClass="Order\Entity\Repository\RoleRepository")
  * @ORM\Table(name="roles")
  * @ORM\HasLifecycleCallbacks
  */

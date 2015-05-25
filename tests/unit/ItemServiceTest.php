@@ -33,7 +33,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
      */
     protected function _before()
     {
-        $this->repository = $this->getMockBuilder('Order\Entity\ItemRepository')->disableOriginalConstructor()->getMock();
+        $this->repository = $this->getMockBuilder('Order\Entity\Repository\ItemRepository')->disableOriginalConstructor()->getMock();
         $this->form = $this->getMockBuilder('Order\Form\ItemForm')->disableOriginalConstructor()->getMock();
         $this->service = new ItemService($this->getServiceManager(), $this->repository, $this->form);
 

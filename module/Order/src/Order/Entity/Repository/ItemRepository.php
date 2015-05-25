@@ -1,8 +1,8 @@
 <?php
 
+namespace Order\Entity\Repository;
 
-namespace Order\Entity;
-
+use Order\Entity\Item;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
 
 class ItemRepository extends CrudRepository
