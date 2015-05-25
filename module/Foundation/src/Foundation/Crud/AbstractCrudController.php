@@ -35,7 +35,7 @@ abstract class AbstractCrudController extends Controller
     {
         // get router config
         $routerConfig = $this->getServiceLocator()->get('config')['router'];
-        $matchedRouteName = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+        $matchedRouteName = $this->getRouteName();
 
         // get the matched route config
         $route = $routerConfig['routes'][$matchedRouteName];
@@ -46,6 +46,7 @@ abstract class AbstractCrudController extends Controller
 
         return !empty($matches) ? $matches[0] : null;
     }
+
 
     /**
      * Default action if none provided.
@@ -76,7 +77,7 @@ abstract class AbstractCrudController extends Controller
 
         return [
             'title' => sprintf('Create New %s', $this->getResourceTitle()),
-            'form' => $this->service->getForm(),
+            'form' => $this->service->prepareForm($request->getUri()->getPath()),
         ];
     }
 
@@ -96,8 +97,8 @@ abstract class AbstractCrudController extends Controller
 
         return [
             'title' => sprintf('Edit %s', $this->getResourceTitle()),
-            'form' => $this->service->getForm(),
-            'item' => $item
+            'form' => $this->service->prepareForm($request->getUri()->getPath()),
+            'item' => $item,
         ];
     }
 
@@ -128,5 +129,13 @@ abstract class AbstractCrudController extends Controller
     public function redirectToIndex()
     {
         return $this->redirect()->toUrl($this->getBaseUri());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRouteName()
+    {
+        return $this->getEvent()->getRouteMatch()->getMatchedRouteName();
     }
 }

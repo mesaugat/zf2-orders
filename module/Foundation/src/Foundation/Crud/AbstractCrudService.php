@@ -161,6 +161,17 @@ abstract class AbstractCrudService extends Service
     }
 
     /**
+     * @param $actionUri
+     * @return Form
+     */
+    public function prepareForm($actionUri)
+    {
+        return $this->form
+                ->setAttribute('action', $actionUri)
+                ->prepare();
+    }
+
+    /**
      * @param $item
      * @return bool
      */

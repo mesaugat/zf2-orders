@@ -14,7 +14,7 @@ class RoleRepository extends CrudRepository
     public function getObjectInstance(array $data)
     {
         $object = new Role();
-        $object->setRoleId($data['role_id']);
+        $object->setRoleId($data['roleId']);
         $object->setName($data['name']);
 
 //        $object->setParent($data['parent_id']);

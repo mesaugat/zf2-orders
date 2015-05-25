@@ -3,8 +3,6 @@
         <?php $this->headTitle($title); ?>
         <h1><?php echo $this->escapeHtml($title); ?></h1>
         <?php
-        $form->setAttribute('action', $this->url('roles', ['action' => 'edit', 'id' => $item->getId()]));
-        $form->prepare();
         $form->get('submit')->setValue('Update Post');
 
         echo $this->form()->openTag($form);
