@@ -38,13 +38,15 @@
             <?php endif; ?>
             <table class="table">
                 <tr>
-                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Unique Id</th>
                     <th>Parent</th>
                     <th>Created</th>
                     <th></th>
                 </tr>
                 <?php foreach ($items as $item): ?>
                     <tr>
+                        <td><?php echo $item->getName() ?></td>
                         <td><?php echo $item->getRoleId() ?></td>
                         <td><?php echo ($parent = $item->getParent()) ? $parent->getRoleId() : '' ?></td>
                         <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>

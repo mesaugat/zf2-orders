@@ -23,9 +23,31 @@ class Role implements HierarchicalRoleInterface, ArraySerializableInterface
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="role_id", length=255, unique=true, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $name;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", name="role_id", length=255, unique=true)
      */
     protected $roleId;
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
     /**
      * @var Role

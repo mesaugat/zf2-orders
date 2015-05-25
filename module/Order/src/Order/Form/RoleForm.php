@@ -14,15 +14,24 @@ class RoleForm extends Form
         ]);
 
         $this->add([
-            'name' => 'role_id',
+            'name' => 'name',
             'type' => 'Text',
             'options' => [
-                'label' => 'Role Name',
+                'label' => 'Name',
             ],
         ]);
 
         $this->add([
-            'name' => 'parent_id',
+            'name' => 'roleId',
+            'type' => 'Text',
+            'options' => [
+                'label' => 'Role Unique Id',
+            ],
+        ]);
+
+
+        $this->add([
+            'name' => 'parentId',
             'type' => 'Select',
             'options' => [
                 'label' => 'Parent',

@@ -15,6 +15,7 @@ class RoleRepository extends CrudRepository
     {
         $object = new Role();
         $object->setRoleId($data['role_id']);
+        $object->setName($data['name']);
 
 //        $object->setParent($data['parent_id']);
 

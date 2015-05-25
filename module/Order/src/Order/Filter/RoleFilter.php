@@ -20,7 +20,7 @@ class RoleFilter extends Filter
         ]);
 
         $this->add([
-            'name' => 'role_id',
+            'name' => 'roleId',
             'required' => true,
             'filters' => [
                 ['name' => 'StripTags'],
@@ -48,7 +48,7 @@ class RoleFilter extends Filter
         ]);
 
         $this->add([
-            'name' => 'parent_id',
+            'name' => 'parentId',
             'filters' => [
                 ['name' => 'Int'],
             ]
