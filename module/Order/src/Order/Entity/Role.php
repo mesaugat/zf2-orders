@@ -6,22 +6,48 @@ use BjyAuthorize\Acl\HierarchicalRoleInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
+use Foundation\Traits\ArraySerializableTrait;
+use Zend\Stdlib\ArraySerializableInterface;
 
 /**
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Order\Entity\Repository\RoleRepository")
  * @ORM\Table(name="roles")
  * @ORM\HasLifecycleCallbacks
  */
-class Role implements HierarchicalRoleInterface
+class Role implements HierarchicalRoleInterface, ArraySerializableInterface
 {
     use PrimaryKeyTrait, CreatedDateTrait;
 
+    use ArraySerializableTrait;
+
     /**
      * @var string
-     * @ORM\Column(type="string", name="role_id", length=255, unique=true, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $name;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", name="role_id", length=255, unique=true)
      */
     protected $roleId;
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
     /**
      * @var Role
@@ -49,7 +75,7 @@ class Role implements HierarchicalRoleInterface
      */
     public function setRoleId($roleId)
     {
-        $this->roleId = (string) $roleId;
+        $this->roleId = (string)$roleId;
     }
 
     /**

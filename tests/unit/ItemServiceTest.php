@@ -36,9 +36,10 @@ class ItemServiceTest extends \Codeception\TestCase\Test
      */
     protected function _before()
     {
-        $this->repository = $this->getMockBuilder('Order\Entity\ItemRepository')->disableOriginalConstructor()->getMock();
+        $this->repository = $this->getMockBuilder('Order\Entity\Repository\ItemRepository')->disableOriginalConstructor()->getMock();
         $this->form = $this->getMockBuilder('Order\Form\ItemForm')->disableOriginalConstructor()->getMock();
         $this->service = new ItemService($this->getServiceManager(), $this->repository, $this->form);
+
     }
 
     protected function _after()
@@ -89,6 +90,15 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
 
     /**
+     * Base Uri for testing
+     * @return string
+     */
+    private function getBaseUri()
+    {
+        return '/items';
+    }
+
+    /**
      * test ItemService::createNew() when data is valid
      */
     public function testCreateNewSucceedsWhenDataIsValid()
@@ -103,6 +113,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
         // The form says the data is valid
         $this->form->expects($this->once())->method('isValid')->willReturn(true);
         $this->form->expects($this->once())->method('getData')->willReturn($data);
+        $this->repository->expects($this->once())->method('getClassName')->willReturn('Order\Entity\Item');
 
         $this->repository->expects($this->once())->method('createNew')->with($data)->willReturn($this->getTestItem());
 
@@ -151,6 +162,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
     public function testUpdateThrowsExceptionIfFormNotBoundToAnyItem()
     {
         $this->setExpectedException('Exception');
+        $this->repository->expects($this->once())->method('getClassName')->willReturn('Order\Entity\Item');
         $this->form->expects($this->once())->method('getObject')->willReturn(null);
 
         $data = $this->getTestItemData();
@@ -169,6 +181,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->form->expects($this->once())->method('getObject')->willReturn($item);
         $this->form->expects($this->once())->method('setData')->with($data);
+        $this->repository->expects($this->once())->method('getClassName')->willReturn('Order\Entity\Item');
 
         // The form says the data is invalid
         $this->form->expects($this->once())->method('isValid')->willReturn(false);
@@ -195,6 +208,8 @@ class ItemServiceTest extends \Codeception\TestCase\Test
         $this->form->expects($this->once())->method('isValid')->willReturn(true);
 
         $this->form->expects($this->once())->method('getData')->willReturn($item);
+
+        $this->repository->expects($this->once())->method('getClassName')->willReturn('Order\Entity\Item');
         $this->repository->expects($this->once())->method('update')->with($item);
 
         $successful = $this->service->update($data);
@@ -261,7 +276,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
         });
 
         $this->setExpectedException('InvalidArgumentException');
-        $this->service->fetchList($query);
+        $this->service->fetchList($this->getBaseUri(), $query);
     }
 
     /**
@@ -281,7 +296,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->repository->expects($this->once())->method('fetchList')->with(0, 5)->willReturn($paginator);
 
-        $data = $this->service->fetchList($query);
+        $data = $this->service->fetchList($this->getBaseUri(), $query);
 
         $this->assertTrue(is_array($data));
         $this->assertEquals(0, $data['total']);
@@ -315,7 +330,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->setExpectedException('Foundation\Exception\NotFoundException');
 
-        $this->service->fetchList($query);
+        $this->service->fetchList($this->getBaseUri(), $query);
     }
 
     /**
@@ -339,7 +354,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->repository->expects($this->once())->method('fetchList')->with(0, $max)->willReturn($paginator);
 
-        $data = $this->service->fetchList($query);
+        $data = $this->service->fetchList($this->getBaseUri(), $query);
 
         $expectedNoOfPages = 1;
 
@@ -379,14 +394,14 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->repository->expects($this->once())->method('fetchList')->with(5, $max)->willReturn($paginator);
 
-        $data = $this->service->fetchList($query);
+        $data = $this->service->fetchList($this->getBaseUri(), $query);
 
         $expectedNoOfPages = (int)ceil($totalRecords / $max);
 
         // Since current page = 2, these should be the links returned
         $expectedLinks = [
-            'prev' => ItemService::LIST_BASE_URI . '?page=1',
-            'next' => ItemService::LIST_BASE_URI . '?page=3',
+            'prev' => $this->getBaseUri() . '?page=1',
+            'next' => $this->getBaseUri() . '?page=3',
         ];
 
         $this->assertTrue(is_array($data));

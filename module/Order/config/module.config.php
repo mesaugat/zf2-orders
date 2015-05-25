@@ -2,8 +2,6 @@
 
 namespace Order;
 
-use Order\Service\ItemService;
-
 return [
     'doctrine' => [
         'driver' => [
@@ -26,7 +24,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory'
+            'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory',
+            'Order\Service\RoleService' => 'Order\Factory\RoleServiceFactory'
         ],
         'invokables' => [
             'Doctrine\ORM\Mapping\UnderscoreNamingStrategy' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
@@ -35,6 +34,7 @@ return [
     'controllers' => [
         'factories' => [
             'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
+            'Order\Controller\Role' => 'Order\Factory\RoleControllerFactory',
         ],
     ],
     'translator' => [
@@ -48,24 +48,7 @@ return [
         ],
     ],
     // The following section is new and should be added to your file
-    'router' => [
-        'routes' => [
-            'items' => [
-                'type' => 'segment',
-                'options' => [
-                    'route' => ItemService::LIST_BASE_URI . '[/:action][/:id]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '\d+',
-                    ],
-                    'defaults' => [
-                        'controller' => 'Order\Controller\Item',
-                        'action' => 'index',
-                    ],
-                ],
-            ],
-        ],
-    ],
+    'router' => require __DIR__ . '/router.config.php',
     'view_manager' => [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',

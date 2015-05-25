@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\Unit;
-
-use Order\Entity\Item;
+use Order\Entity\Role;
 use Tests\Traits\EntityManagerAwareTrait;
 
-class ItemRepositoryTest extends \Codeception\TestCase\Test
+class RoleRepositoryTest extends \Codeception\TestCase\Test
 {
     use EntityManagerAwareTrait;
 
@@ -15,11 +13,11 @@ class ItemRepositoryTest extends \Codeception\TestCase\Test
     protected $tester;
 
     /**
-     * @var \Order\Entity\Repository\ItemRepository
+     * @var \Order\Entity\RoleRepository
      */
     protected $repository;
 
-    const ENTITY_CLASS = 'Order\Entity\Item';
+    const ENTITY_CLASS = 'Order\Entity\Role';
 
     protected function _before()
     {
@@ -38,67 +36,19 @@ class ItemRepositoryTest extends \Codeception\TestCase\Test
         $this->em->createQuery('DELETE FROM ' . self::ENTITY_CLASS)->execute();
     }
 
-    public function testCreatingNewItem()
+    private function createDummyItem($name, Role $parent = null)
     {
-        $data = [
-            'name' => 'Coffee Mug',
-            'rate' => '90.00'
-        ];
-        $this->tester->cantSeeInRepository(self::ENTITY_CLASS, $data);
+        $role = new Role();
+        $role->setRoleId($name);
 
-        $this->repository->createNew($data);
+        if (!is_null($parent)) {
+            $role->setParent($parent);
+        }
 
-        $this->tester->canSeeInRepository(self::ENTITY_CLASS, $data);
-    }
-
-    private function createDummyItem($name, $rate)
-    {
-        $item = new Item();
-        $item->setName($name);
-        $item->setRate($rate);
-        $this->em->persist($item);
+        $this->em->persist($role);
         $this->em->flush();
 
-        return $item;
-    }
-
-    public function testDeletingAnItem()
-    {
-        $item = $this->createDummyItem('Item on Test', '67.77');
-
-        $this->tester->canSeeInRepository(self::ENTITY_CLASS, [
-            'name' => 'Item on Test'
-        ]);
-        // Delete the item
-        $this->repository->remove($item);
-
-        $this->tester->cantSeeInRepository(self::ENTITY_CLASS, [
-            'name' => 'Item on Test'
-        ]);
-    }
-
-    public function testUpdatingAnItem()
-    {
-        $item = $this->createDummyItem('Item on Test', '67.77');
-
-        $this->tester->canSeeInRepository(self::ENTITY_CLASS, [
-            'id' => $item->getId(),
-            'name' => 'Item on Test',
-            'rate' => '67.77'
-        ]);
-
-        $newName = 'Updated Test Item';
-        $newRate = '127.77';
-
-        $item->setName($newName);
-        $item->setRate($newRate);
-        $this->repository->update($item);
-
-        $this->tester->canSeeInRepository(self::ENTITY_CLASS, [
-            'id' => $item->getId(),
-            'name' => $newName,
-            'rate' => $newRate
-        ]);
+        return $role;
     }
 
     public function testFetchListReturnsPaginatorObject()
@@ -119,7 +69,7 @@ class ItemRepositoryTest extends \Codeception\TestCase\Test
 
     public function testFetchListReturnItemsIfRecordsFound()
     {
-        $this->createDummyItem('Item on Test', '67.77');
+        $this->createDummyItem('Test Role');
 
         $list = $this->repository->fetchList();
 
@@ -131,7 +81,7 @@ class ItemRepositoryTest extends \Codeception\TestCase\Test
         $this->assertNotEmpty($items);
         $this->assertEquals(1, $total);
 
-        // Should be instance of Item Entity
+        // Should be instance of Role Entity
         $first = array_pop($items);
         $this->assertInstanceOf(self::ENTITY_CLASS, $first);
     }
@@ -140,7 +90,7 @@ class ItemRepositoryTest extends \Codeception\TestCase\Test
     {
         $totalRecords = 10;
         for ($i = 1; $i <= $totalRecords; $i++) {
-            $this->createDummyItem('Item ' . $i, '67.77' . $i);
+            $this->createDummyItem('Role' . $i);
         }
 
         $paginationLimit = 8;

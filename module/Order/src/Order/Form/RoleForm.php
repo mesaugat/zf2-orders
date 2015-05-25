@@ -4,7 +4,7 @@ namespace Order\Form;
 
 use Foundation\AbstractForm as Form;
 
-class ItemForm extends Form
+class RoleForm extends Form
 {
     protected function initialize()
     {
@@ -22,10 +22,23 @@ class ItemForm extends Form
         ]);
 
         $this->add([
-            'name' => 'rate',
+            'name' => 'roleId',
             'type' => 'Text',
             'options' => [
-                'label' => 'Rate',
+                'label' => 'Role Unique Id',
+            ],
+        ]);
+
+
+        $this->add([
+            'name' => 'parentId',
+            'type' => 'Select',
+            'options' => [
+                'label' => 'Parent',
+                'value_options' => [
+                    '0' => 'None',
+                    '1' => 'Foo'
+                ]
             ],
         ]);
 

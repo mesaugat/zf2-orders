@@ -5,10 +5,9 @@ namespace Order\Filter;
 use Foundation\AbstractFilter as Filter;
 use Zend\Validator\Regex;
 
-class ItemFilter extends Filter
+class RoleFilter extends Filter
 {
-    const FLOATING_POINT_PATTERN = '/^\d*(\.\d)?\d*$/';
-    const ITEM_NAME_PATTERN = '/^[a-z]+[a-z0-9\s]+$/i';
+    const NAME_PATTERN = '/^[a-z]+[a-z0-9\s]+$/i';
 
     protected function initialize()
     {
@@ -21,7 +20,7 @@ class ItemFilter extends Filter
         ]);
 
         $this->add([
-            'name' => 'name',
+            'name' => 'roleId',
             'required' => true,
             'filters' => [
                 ['name' => 'StripTags'],
@@ -39,9 +38,9 @@ class ItemFilter extends Filter
                 [
                     'name' => 'Regex',
                     'options' => [
-                        'pattern' => self::ITEM_NAME_PATTERN,
+                        'pattern' => self::NAME_PATTERN,
                         'messages'  => [
-                            Regex::NOT_MATCH => $this->translate('validation.invalid_item_name')
+                            Regex::NOT_MATCH => $this->translate('validation.invalid_role_id')
                         ]
                     ]
                 ]
@@ -49,22 +48,9 @@ class ItemFilter extends Filter
         ]);
 
         $this->add([
-            'name' => 'rate',
-            'required' => true,
+            'name' => 'parentId',
             'filters' => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-            'validators' => [
-                [
-                    'name' => 'Regex',
-                    'options' => [
-                        'pattern' => self::FLOATING_POINT_PATTERN,
-                        'messages'  => [
-                            Regex::NOT_MATCH => $this->translate('validation.invalid_item_rate')
-                        ]
-                    ]
-                ]
+                ['name' => 'Int'],
             ]
         ]);
     }

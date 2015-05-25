@@ -1,17 +1,18 @@
 <?php
 
 
-namespace Order\Entity;
+namespace Foundation\Crud;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Foundation\AbstractRepository as Repository;
 
-class ItemRepository extends Repository
+abstract class AbstractCrudRepository extends Repository
 {
+    public abstract  function getObjectInstance(array $data);
 
     public function fetchList($offset = Repository::PAGINATION_OFFSET_START, $max = Repository::PAGINATION_MAX_ROWS)
     {
-        $dql = 'SELECT i FROM Order\Entity\Item i ORDER BY i.created DESC';
+        $dql = sprintf('SELECT i FROM %s i ORDER BY i.created DESC', $this->getEntityName());
 
         $em = $this->getEntityManager();
         $query = $em->createQuery($dql);
@@ -26,10 +27,7 @@ class ItemRepository extends Repository
 
     public function createNew(array $data)
     {
-
-        $item = new Item();
-        $item->setName($data['name']);
-        $item->setRate($data['rate']);
+        $item = $this->getObjectInstance($data);
 
         $em = $this->getEntityManager();
         $em->persist($item);
@@ -38,12 +36,12 @@ class ItemRepository extends Repository
         return $item;
     }
 
-    public function update(Item $item)
+    public function update($item)
     {
         $this->getEntityManager()->flush($item);
     }
 
-    public function remove(Item $item)
+    public function remove($item)
     {
         $em = $this->getEntityManager();
         $em->remove($item);

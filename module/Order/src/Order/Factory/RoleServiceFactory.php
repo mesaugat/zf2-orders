@@ -2,28 +2,28 @@
 
 namespace Order\Factory;
 
-use Order\Filter\ItemFilter;
-use Order\Form\ItemForm;
-use Order\Service\ItemService;
+use Order\Filter\RoleFilter;
+use Order\Form\RoleForm;
+use Order\Service\RoleService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ItemServiceFactory implements FactoryInterface
+class RoleServiceFactory implements FactoryInterface
 {
 
     /**
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return ItemService
+     * @return RoleService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $repository = $em->getRepository('Order\Entity\Item');
+        $repository = $em->getRepository('Order\Entity\Role');
         $translator = $serviceLocator->get('translator');
-        $form = new ItemForm(new ItemFilter($translator));
+        $form = new RoleForm(new RoleFilter($translator));
 
-        return new ItemService($serviceLocator, $repository, $form);
+        return new RoleService($serviceLocator, $repository, $form);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 return [
-    'no_items' => 'There are no items',
+    'no_records_found' => 'No records found',
 
     // Exceptions
     'exception.invalid_page' => 'Invalid Page',
@@ -11,5 +11,6 @@ return [
     // Validations
     'validation.invalid_item_name' => 'Invalid Item Name',
     'validation.invalid_item_rate' => 'Invalid Rate',
+    'validation.invalid_role_id' => 'Invalid Role',
 
 ];
