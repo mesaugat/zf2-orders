@@ -2,9 +2,6 @@
 
 namespace Order;
 
-use Order\Service\ItemService;
-use Order\Service\RoleService;
-
 return [
     'doctrine' => [
         'driver' => [
@@ -56,7 +53,7 @@ return [
             'items' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => ItemService::getBaseUri() . '[/:action][/:id]',
+                    'route' => '/items[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '\d+',
@@ -70,10 +67,11 @@ return [
             'roles' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => RoleService::getBaseUri() . '[/:action][/:id]',
+                    'route' => '/roles[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '\d+',
+
                     ],
                     'defaults' => [
                         'controller' => 'Order\Controller\Role',

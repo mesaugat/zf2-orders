@@ -16,17 +16,17 @@ abstract class AbstractCrudService extends Service
     protected $form;
     protected $repository;
 
+    /**
+     * @param ServiceLocatorInterface $serviceManager
+     * @param AbstractCrudRepository $repository
+     * @param Form $form
+     */
     public function __construct(ServiceLocatorInterface $serviceManager, CrudRepository $repository, Form $form)
     {
         parent::__construct($serviceManager);
 
         $this->repository = $repository;
         $this->form = $form;
-    }
-
-    public static function getBaseUri()
-    {
-        return '/';
     }
 
     /**
@@ -47,11 +47,13 @@ abstract class AbstractCrudService extends Service
     }
 
     /**
-     * @param $item
+     * Bind an object to the form
+     *
+     * @param object $object
      */
-    public function bindToForm($item)
+    public function bindToForm($object)
     {
-        $this->form->bind($item);
+        $this->form->bind($object);
     }
 
     /**
@@ -79,11 +81,14 @@ abstract class AbstractCrudService extends Service
 
 
     /**
+     * Fetches list of Doctrine entites from the repository with Pagination
+     *
+     * @param string $baseUri       Base uri of listing page for Pagination
      * @param Parameters $query
      * @return array
      * @throws NotFoundException
      */
-    public function fetchList(Parameters $query)
+    public function fetchList($baseUri, Parameters $query)
     {
         $max = (int)$query->get('max', AbstractRepository::PAGINATION_MAX_ROWS);
         $page = (int)$query->get('page', 1);
@@ -105,8 +110,8 @@ abstract class AbstractCrudService extends Service
             }
         }
 
-        $pageLink = function ($page) use ($query) {
-            return static::getBaseUri() . '?' . http_build_query($query->set('page', $page)->toArray());
+        $pageLink = function ($page) use ($baseUri, $query) {
+            return $baseUri . '?' . http_build_query($query->set('page', $page)->toArray());
         };
 
         $links = [];

@@ -87,6 +87,15 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
 
     /**
+     * Base Uri for testing
+     * @return string
+     */
+    private function getBaseUri()
+    {
+        return '/items';
+    }
+
+    /**
      * test ItemService::createNew() when data is valid
      */
     public function testCreateNewSucceedsWhenDataIsValid()
@@ -264,7 +273,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
         });
 
         $this->setExpectedException('InvalidArgumentException');
-        $this->service->fetchList($query);
+        $this->service->fetchList($this->getBaseUri(), $query);
     }
 
     /**
@@ -284,7 +293,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->repository->expects($this->once())->method('fetchList')->with(0, 5)->willReturn($paginator);
 
-        $data = $this->service->fetchList($query);
+        $data = $this->service->fetchList($this->getBaseUri(), $query);
 
         $this->assertTrue(is_array($data));
         $this->assertEquals(0, $data['total']);
@@ -318,7 +327,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->setExpectedException('Foundation\Exception\NotFoundException');
 
-        $this->service->fetchList($query);
+        $this->service->fetchList($this->getBaseUri(), $query);
     }
 
     /**
@@ -342,7 +351,7 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->repository->expects($this->once())->method('fetchList')->with(0, $max)->willReturn($paginator);
 
-        $data = $this->service->fetchList($query);
+        $data = $this->service->fetchList($this->getBaseUri(), $query);
 
         $expectedNoOfPages = 1;
 
@@ -382,14 +391,14 @@ class ItemServiceTest extends \Codeception\TestCase\Test
 
         $this->repository->expects($this->once())->method('fetchList')->with(5, $max)->willReturn($paginator);
 
-        $data = $this->service->fetchList($query);
+        $data = $this->service->fetchList($this->getBaseUri(), $query);
 
         $expectedNoOfPages = (int)ceil($totalRecords / $max);
 
         // Since current page = 2, these should be the links returned
         $expectedLinks = [
-            'prev' => ItemService::getBaseUri() . '?page=1',
-            'next' => ItemService::getBaseUri() . '?page=3',
+            'prev' => $this->getBaseUri() . '?page=1',
+            'next' => $this->getBaseUri() . '?page=3',
         ];
 
         $this->assertTrue(is_array($data));

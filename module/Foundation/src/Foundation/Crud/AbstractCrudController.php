@@ -2,45 +2,70 @@
 
 namespace Foundation\Crud;
 
-use Doctrine\Common\Inflector\Inflector;
-use Foundation\AbstractController as Controller;
-use Foundation\AbstractService as Service;
 use Zend\View\Model\ViewModel;
+use Foundation\AbstractController as Controller;
+use Foundation\Crud\AbstractCrudService as CrudService;
 
 abstract class AbstractCrudController extends Controller
 {
     protected $service;
 
     /**
-     * Returns the title of the associated resource
+     * Returns the title of the resource associated with this controller
+     *
      * @return string
      */
     protected abstract function getResourceTitle();
 
     /**
-     * @return string
+     * @param AbstractCrudService $service
      */
-    protected function getBaseUri()
-    {
-        return call_user_func(get_class($this->service) . '::getBaseUri');
-    }
-
-    /**
-     * @param Service $service
-     */
-    public function __construct(Service $service)
+    public function __construct(CrudService $service)
     {
         $this->service = $service;
     }
 
+    /**
+     * Returns the base uri of the resource associated with this controller
+     * from the router config
+     *
+     * @return string|null
+     */
+    protected function getBaseUri()
+    {
+        // get router config
+        $routerConfig = $this->getServiceLocator()->get('config')['router'];
+        $matchedRouteName = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+
+        // get the matched route config
+        $route = $routerConfig['routes'][$matchedRouteName];
+        $pattern = $route['options']['route'];
+
+        // Extract the base uri from the pattern
+        preg_match('/^\/([a-z0-9\-\.]+)/i', $pattern, $matches);
+
+        return !empty($matches) ? $matches[0] : null;
+    }
+
+    /**
+     * Default action if none provided.
+     *
+     * @return ViewModel
+     */
     public function indexAction()
     {
-        $data = $this->service->fetchList($this->getRequest()->getQuery());
-        $data['title'] = Inflector::pluralize($this->getResourceTitle());
+        // fetch list with pagination
+        $data = $this->service->fetchList($this->getBaseUri(), $this->getRequest()->getQuery());
+
+        // Title for the resource list
+        $data['title'] = sprintf('%s List', $this->getResourceTitle());
 
         return new ViewModel($data);
     }
 
+    /**
+     * @return array|\Zend\Http\Response
+     */
     public function addAction()
     {
         $request = $this->getRequest();
@@ -55,6 +80,9 @@ abstract class AbstractCrudController extends Controller
         ];
     }
 
+    /**
+     * @return array|\Zend\Http\Response
+     */
     public function editAction()
     {
         $item = $this->service->fetch($this->params('id'));
@@ -73,6 +101,9 @@ abstract class AbstractCrudController extends Controller
         ];
     }
 
+    /**
+     * @return array|\Zend\Http\Response
+     */
     public function deleteAction()
     {
         $item = $this->service->fetch($this->params('id'));
@@ -90,6 +121,8 @@ abstract class AbstractCrudController extends Controller
     }
 
     /**
+     * Redirects to the Index action (base uri)
+     *
      * @return \Zend\Http\Response
      */
     public function redirectToIndex()
