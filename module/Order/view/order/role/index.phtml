@@ -21,8 +21,9 @@
                         <?php endif; ?>
 
                         <?php for ($p = 1; $p <= $noOfPages; $p++): ?>
-                            <li class="<?php echo $p == $page ? 'active' : '' ?>"><a
-                                    href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a></li>
+                            <li class="<?php echo $p == $page ? 'active' : '' ?>">
+                                <a href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a>
+                            </li>
                         <?php endfor; ?>
 
                         <?php if (isset($links['next'])): ?>
@@ -38,29 +39,27 @@
             <table class="table">
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Rate (NRs.)</th>
+                    <th>Role</th>
+                    <th>Parent</th>
                     <th>Created</th>
                     <th></th>
                 </tr>
                 <?php foreach ($items as $item): ?>
                     <tr>
                         <td><?php echo $item->getId() ?></td>
-                        <td><?php echo $item->getName() ?></td>
-                        <td><?php echo $item->getRate() ?></td>
+                        <td><?php echo $item->getRoleId() ?></td>
+                        <td><?php echo ($parent = $item->getParent()) ? $parent->getRoleId() : '' ?></td>
                         <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
                         <td>
-                            <a class="btn btn-sm btn-default"
-                               href="<?php echo $this->url('items', ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
-                            <a class="btn btn-sm btn-default" href="<?php echo $this->url('items',
-                                ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+                            <a class="btn btn-sm btn-default" href="<?php echo $this->url('roles', ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
+                            <a class="btn btn-sm btn-default" href="<?php echo $this->url('roles', ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
         <?php endif; ?>
         <div>
-            <a class="btn btn-default" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
+            <a class="btn btn-default" href="<?php echo $this->url('roles', ['action' => 'add']); ?>">Create New</a>
         </div>
     </div>
 </div>

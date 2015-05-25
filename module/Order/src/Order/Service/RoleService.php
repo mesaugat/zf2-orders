@@ -4,10 +4,10 @@ namespace Order\Service;
 
 use Foundation\Crud\AbstractCrudService as CrudService;
 
-class ItemService extends CrudService
+class RoleService extends CrudService
 {
     public static function getBaseUri()
     {
-        return '/items';
+        return '/roles';
     }
 }

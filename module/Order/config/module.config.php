@@ -3,6 +3,7 @@
 namespace Order;
 
 use Order\Service\ItemService;
+use Order\Service\RoleService;
 
 return [
     'doctrine' => [
@@ -26,7 +27,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory'
+            'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory',
+            'Order\Service\RoleService' => 'Order\Factory\RoleServiceFactory'
         ],
         'invokables' => [
             'Doctrine\ORM\Mapping\UnderscoreNamingStrategy' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
@@ -35,6 +37,7 @@ return [
     'controllers' => [
         'factories' => [
             'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
+            'Order\Controller\Role' => 'Order\Factory\RoleControllerFactory',
         ],
     ],
     'translator' => [
@@ -53,13 +56,27 @@ return [
             'items' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => ItemService::LIST_BASE_URI . '[/:action][/:id]',
+                    'route' => ItemService::getBaseUri() . '[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '\d+',
                     ],
                     'defaults' => [
                         'controller' => 'Order\Controller\Item',
+                        'action' => 'index',
+                    ],
+                ],
+            ],
+            'roles' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => RoleService::getBaseUri() . '[/:action][/:id]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '\d+',
+                    ],
+                    'defaults' => [
+                        'controller' => 'Order\Controller\Role',
                         'action' => 'index',
                     ],
                 ],

@@ -4,13 +4,13 @@ namespace Order\Controller;
 
 use Foundation\Crud\AbstractCrudController as CrudController;
 
-class ItemController extends CrudController
+class RoleController extends CrudController
 {
     /**
      * @return string
      */
     protected function getResourceTitle()
     {
-        return 'Item';
+        return 'Role';
     }
 }
