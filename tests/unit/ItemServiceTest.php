@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Unit;
+
+use ArrayIterator;
 use Order\Entity\Item;
 use Order\Service\ItemService;
 use Tests\Traits\FakerAwareTrait;

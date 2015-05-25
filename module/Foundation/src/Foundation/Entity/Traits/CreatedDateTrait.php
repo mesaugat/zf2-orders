@@ -20,6 +20,8 @@ trait CreatedDateTrait
     }
 
     /**
+     * Created date will be set automatically when entity before persist triggers
+     *
      * @ORM\PrePersist
      */
     public function setCreated()

@@ -1,7 +1,8 @@
 <?php
 
-use Order\Entity\Item;
+namespace Tests\Unit;
 
+use Order\Entity\Item;
 use Tests\Traits\EntityManagerAwareTrait;
 
 class ItemRepositoryTest extends \Codeception\TestCase\Test
