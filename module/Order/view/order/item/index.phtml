@@ -37,7 +37,6 @@
             <?php endif; ?>
             <table class="table">
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Rate (NRs.)</th>
                     <th>Created</th>
@@ -45,7 +44,6 @@
                 </tr>
                 <?php foreach ($items as $item): ?>
                     <tr>
-                        <td><?php echo $item->getId() ?></td>
                         <td><?php echo $item->getName() ?></td>
                         <td><?php echo $item->getRate() ?></td>
                         <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
