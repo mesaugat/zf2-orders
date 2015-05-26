@@ -18,6 +18,7 @@ class RoleForm extends Form
             'type' => 'Text',
             'options' => [
                 'label' => 'Name',
+                'column-size' => 'sm-8'
             ],
         ]);
 
@@ -26,6 +27,7 @@ class RoleForm extends Form
             'type' => 'Text',
             'options' => [
                 'label' => 'Role Unique Id',
+                'column-size' => 'sm-8'
             ],
         ]);
 
@@ -38,16 +40,21 @@ class RoleForm extends Form
                 'value_options' => [
                     '0' => 'None',
                     '1' => 'Foo'
-                ]
+                ],
+                'column-size' => 'sm-8'
             ],
         ]);
 
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
+            'options' => [
+                'label' => 'Submit',
+                'column-size' => 'sm-8 col-sm-offset-2'
+            ],
             'attributes' => [
-                'value' => 'Create',
                 'id' => 'submitbutton',
+                'class' => 'btn-primary'
             ],
         ]);
     }

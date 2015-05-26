@@ -22,7 +22,8 @@
         "symfony/var-dumper": "^2.6",
         "zf-commons/zfc-user-doctrine-orm": "^1.0",
         "fzaninotto/faker": "^1.4",
-        "bjyoungblood/bjy-authorize": "^1.4"
+        "bjyoungblood/bjy-authorize": "^1.4",
+        "neilime/zf2-twb-bundle": "^2.4"
     },
     "require-dev": {
         "zendframework/zend-developer-tools": "dev-master",
