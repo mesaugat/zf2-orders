@@ -48,17 +48,24 @@
                         <td><?php echo $item->getRate() ?></td>
                         <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
                         <td>
-                            <a class="btn btn-sm btn-default"
-                               href="<?php echo $this->url('items', ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
-                            <a class="btn btn-sm btn-default" href="<?php echo $this->url('items',
-                                ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+                            <?php if ($this->isAllowed('items', 'update')) { ?>
+                                <a class="btn btn-sm btn-default"
+                                   href="<?php echo $this->url('items',
+                                       ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
+                            <?php } ?>
+                            <?php if ($this->isAllowed('items', 'delete')) { ?>
+                                <a class="btn btn-sm btn-default" href="<?php echo $this->url('items',
+                                    ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+                            <?php } ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
         <?php endif; ?>
-        <div>
-            <a class="btn btn-default" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
-        </div>
+        <?php if ($this->isAllowed('items', 'create')) { ?>
+            <div>
+                <a class="btn btn-default" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
+            </div>
+        <?php } ?>
     </div>
 </div>

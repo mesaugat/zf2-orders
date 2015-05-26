@@ -10,6 +10,8 @@ $modules = [
     'ZfcBase',
     'ZfcUser',
     'ZfcUserDoctrineORM',
+    'BjyAuthorize',
+    // Our Modules
     'Foundation',
     'Application',
     'Order',
