@@ -11,6 +11,7 @@ $modules = [
     'ZfcUser',
     'ZfcUserDoctrineORM',
     'BjyAuthorize',
+    'TwbBundle',
     // Our Modules
     'Foundation',
     'Application',
