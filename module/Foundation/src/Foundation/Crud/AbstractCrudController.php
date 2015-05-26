@@ -34,17 +34,20 @@ abstract class AbstractCrudController extends Controller
     protected function getBaseUri()
     {
         // get router config
-        $routerConfig = $this->getServiceLocator()->get('config')['router'];
+        $routesConfig = $this->getServiceLocator()->get('config')['router']['routes'];
         $matchedRouteName = $this->getRouteName();
 
-        // get the matched route config
-        $route = $routerConfig['routes'][$matchedRouteName];
-        $pattern = $route['options']['route'];
+        // Get the base route
+        if (isset($routesConfig[$matchedRouteName])) {
+            $baseRoute = $routesConfig[$matchedRouteName];
+        } else {
+            $baseRoute = substr($matchedRouteName, 0, strpos($matchedRouteName, '/'));
+            $baseRoute = $routesConfig[$baseRoute];
+        }
 
-        // Extract the base uri from the pattern
-        preg_match('/^\/([a-z0-9\-\.]+)/i', $pattern, $matches);
+        $uri = $baseRoute['options']['route'];
 
-        return !empty($matches) ? $matches[0] : null;
+        return $uri;
     }
 
 
