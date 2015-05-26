@@ -25,6 +25,8 @@ return [
             ],
         ],
         'rule_providers' => [
+
+            // View level access control
             BjyAuthorize\Provider\Rule\Config::class => [
                 'allow' => [
                     //items
@@ -36,5 +38,23 @@ return [
                 ],
             ],
         ],
+        'guards' => [
+            // route guards
+            BjyAuthorize\Guard\Route::class => [
+                // items
+                ['route' => 'items', 'roles' => ['admin', 'operator', 'guest']],
+                ['route' => 'items/add', 'roles' => ['admin']],
+                ['route' => 'items/edit', 'roles' => ['admin']],
+                ['route' => 'items/delete', 'roles' => ['admin']],
+                // roles
+                ['route' => 'roles', 'roles' => ['admin', 'operator']],
+                ['route' => 'roles/add', 'roles' => ['admin']],
+                ['route' => 'roles/edit', 'roles' => ['admin']],
+                ['route' => 'roles/delete', 'roles' => ['admin']],
+                //home
+                ['route' => 'home', 'roles' => ['admin', 'operator', 'guest']],
+
+            ]
+        ]
     ],
 ];
