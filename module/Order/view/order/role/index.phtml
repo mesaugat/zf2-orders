@@ -1,11 +1,21 @@
 <div class="container">
     <div class="row">
         <?php $this->headTitle($title); ?>
-        <h1><?php echo $this->escapeHtml($title); ?> <span class="pull-right">Total: <?php echo $total ?></span></h1>
-        <p><a class="btn btn-primary" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a></p>
+        <h1>
+            <?php echo $this->escapeHtml($title); ?>
+            <small class="pull-right">Total: <?php echo $total ?></small>
+        </h1>
+
+        <?php if ($this->isAllowed('roles', 'create')) { ?>
+            <div>
+                <a class="btn btn-primary" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
+            </div>
+        <?php } ?>
 
         <?php if (empty($items)): ?>
-            <div class="alert alert-info"><?php echo $this->translate('no_records_found') ?></div>
+            <div class="alert alert-info">
+                <?php echo $this->translate('no_records_found') ?>
+            </div>
         <?php else: ?>
             <div>
                 <?php if ($noOfPages > 1): ?>
@@ -45,19 +55,25 @@
                     <th>Created</th>
                     <th></th>
                 </tr>
-                <?php $index = 1; foreach ($items as $item): ?>
+                <?php foreach ($items as $index => $item): ?>
                     <tr>
-                        <td><?php echo $index ?></td>
+                        <td><?php echo $index + 1 ?></td>
                         <td><?php echo $item->getName() ?></td>
                         <td><?php echo $item->getRoleId() ?></td>
                         <td><?php echo ($parent = $item->getParent()) ? $parent->getRoleId() : '' ?></td>
                         <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
                         <td>
-                            <a class="btn btn-sm btn-info" href="<?php echo $this->url('roles', ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
-                            <a class="btn btn-sm btn-danger" href="<?php echo $this->url('roles', ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+                            <?php if ($this->isAllowed('roles', 'update')) { ?>
+                                <a class="btn btn-sm btn-info" href="<?php echo $this->url('roles',
+                                    ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
+                            <?php } ?>
+                            <?php if ($this->isAllowed('roles', 'delete')) { ?>
+                                <a class="btn btn-sm btn-danger" href="<?php echo $this->url('roles',
+                                    ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
+                            <?php } ?>
                         </td>
                     </tr>
-                <?php $index++; endforeach; ?>
+                <?php endforeach; ?>
             </table>
         <?php endif; ?>
     </div>
