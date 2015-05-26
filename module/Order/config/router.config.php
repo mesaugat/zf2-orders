@@ -7,7 +7,7 @@ return [
             'options' => [
                 'route' => '/items',
                 'defaults' => [
-                    'controller' => 'Order\Controller\Item',
+                    'controller' => 'item-controller',
                     'action' => 'index',
                 ],
             ],
@@ -53,7 +53,7 @@ return [
             'options' => [
                 'route' => '/roles',
                 'defaults' => [
-                    'controller' => 'Order\Controller\Role',
+                    'controller' => 'role-controller',
                     'action' => 'index',
                 ],
             ],
