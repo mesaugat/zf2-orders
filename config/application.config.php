@@ -10,6 +10,7 @@ $modules = [
     'ZfcBase',
     'ZfcUser',
     'ZfcUserDoctrineORM',
+    'TwbBundle',
     'Foundation',
     'Application',
     'Order',
