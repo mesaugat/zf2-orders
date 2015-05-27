@@ -5,10 +5,10 @@ namespace Foundation\Crud;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Foundation\AbstractRepository as Repository;
+use Foundation\Entity\EntityInterface;
 
 abstract class AbstractCrudRepository extends Repository
 {
-    public abstract  function getObjectInstance(array $data);
 
     public function fetchList($offset = Repository::PAGINATION_OFFSET_START, $max = Repository::PAGINATION_MAX_ROWS)
     {
@@ -25,20 +25,17 @@ abstract class AbstractCrudRepository extends Repository
         return $paginator;
     }
 
-    public function createNew(array $data)
+    public function save(EntityInterface $entity)
     {
-        $item = $this->getObjectInstance($data);
-
         $em = $this->getEntityManager();
-        $em->persist($item);
-        $em->flush();
 
-        return $item;
-    }
+        // If the id isn't set persist it
+        if (!$entity->getId()) {
+            $em->persist($entity);
+        }
+        $em->flush($entity);
 
-    public function update($item)
-    {
-        $this->getEntityManager()->flush($item);
+        return $entity;
     }
 
     public function remove($item)

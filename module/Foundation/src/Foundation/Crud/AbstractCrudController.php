@@ -74,7 +74,7 @@ abstract class AbstractCrudController extends Controller
     {
         $request = $this->getRequest();
 
-        if ($request->isPost() && $this->service->createNew($request->getPost())) {
+        if ($request->isPost() && $this->service->save($request->getPost())) {
             return $this->redirectToIndex();
         }
 
@@ -89,19 +89,19 @@ abstract class AbstractCrudController extends Controller
      */
     public function editAction()
     {
-        $item = $this->service->fetch($this->params('id'));
+        $entity = $this->service->fetch($this->params('id'));
         $request = $this->getRequest();
 
-        $this->service->bindToForm($item);
+        $this->service->bindToForm($entity);
 
-        if ($request->isPost() && $this->service->update($request->getPost())) {
+        if ($request->isPost() && $this->service->save($request->getPost())) {
             return $this->redirectToIndex();
         }
 
         return [
             'title' => sprintf('Edit %s', $this->getResourceTitle()),
             'form' => $this->service->prepareForm($request->getUri()->getPath()),
-            'item' => $item,
+            'item' => $entity,
         ];
     }
 

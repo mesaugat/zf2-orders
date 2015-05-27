@@ -4,6 +4,7 @@ namespace Order\Entity;
 
 use BjyAuthorize\Acl\HierarchicalRoleInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Foundation\Entity\EntityInterface;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
 use Foundation\Traits\ArraySerializableTrait;
@@ -15,7 +16,7 @@ use Zend\Stdlib\ArraySerializableInterface;
  * @ORM\Table(name="roles")
  * @ORM\HasLifecycleCallbacks
  */
-class Role implements HierarchicalRoleInterface, ArraySerializableInterface
+class Role implements EntityInterface, HierarchicalRoleInterface, ArraySerializableInterface
 {
     use PrimaryKeyTrait, CreatedDateTrait;
 

@@ -40,7 +40,7 @@ return [
         ],
         'guards' => [
             // route guards
-            BjyAuthorize\Guard\Route::class => [
+            /*BjyAuthorize\Guard\Route::class => [
                 // items
                 ['route' => 'items', 'roles' => ['admin', 'operator', 'guest']],
                 ['route' => 'items/add', 'roles' => ['admin']],
@@ -54,7 +54,7 @@ return [
                 //home
                 ['route' => 'home', 'roles' => ['admin', 'operator', 'guest']],
 
-            ]
+            ]*/
         ]
     ],
 ];

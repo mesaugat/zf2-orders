@@ -22,7 +22,7 @@ class RoleServiceFactory implements FactoryInterface
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Order\Entity\Role');
         $translator = $serviceLocator->get('translator');
-        $form = new RoleForm(new RoleFilter($translator));
+        $form = new RoleForm(new RoleFilter($translator), $repository);
 
         return new RoleService($serviceLocator, $repository, $form);
     }

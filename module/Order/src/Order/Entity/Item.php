@@ -3,6 +3,7 @@
 namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Foundation\Entity\EntityInterface;
 use Foundation\Traits\ArraySerializableTrait;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
@@ -13,7 +14,7 @@ use Zend\Stdlib\ArraySerializableInterface;
  * @ORM\Table(name="items")
  * @ORM\HasLifecycleCallbacks
  */
-class Item implements ArraySerializableInterface
+class Item implements EntityInterface, ArraySerializableInterface
 {
     use PrimaryKeyTrait, CreatedDateTrait;
 

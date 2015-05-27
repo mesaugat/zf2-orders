@@ -8,17 +8,30 @@ use Foundation\Crud\AbstractCrudRepository as CrudRepository;
 class RoleRepository extends CrudRepository
 {
     /**
-     * @param array $data
-     * @return Role
+     * Returns array of role names
+     * in the form [ id => role_id ] for using in select dropdown
+     *
+     * @param $exceptionRole
+     * @return array
      */
-    public function getObjectInstance(array $data)
+    public function getRoleSelectList($exceptionRole = null)
     {
-        $object = new Role();
-        $object->setRoleId($data['roleId']);
-        $object->setName($data['name']);
+        $dql = sprintf('SELECT r.id, r.roleId FROM %s r', $this->getEntityName());
+        $query = $this->getEntityManager()->createQuery($dql);
+        if (!is_null($exceptionRole)) {
+            $query->setDQL($dql = $dql . ' WHERE r.roleId != :exception');
+            $query->setParameter('exception', $exceptionRole);
+        }
+        $query->setDQL($dql . ' ORDER BY r.roleId');
 
-//        $object->setParent($data['parent_id']);
+        $list = [
+            '0' => 'None'
+        ];
+        foreach ($query->getResult() as $role) {
+            $list[$role['id']] = $role['roleId'];
+        }
 
-        return $object;
+        return $list;
     }
+
 }
