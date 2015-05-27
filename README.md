@@ -29,7 +29,7 @@ in the required credentials if any.
     
 Import Users & Roles
 --------------------
-Import some users & roles for ACL from the Postgresql dump file. 
+Import default users and roles for ACL from the Postgresql dump file.
 
     psql -U <username> -d <db name> -a -f data/userroles.sql
 
