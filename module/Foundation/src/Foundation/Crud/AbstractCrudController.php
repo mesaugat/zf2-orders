@@ -61,6 +61,14 @@ abstract class AbstractCrudController extends Controller
         // fetch list with pagination
         $data = $this->service->fetchList($this->getBaseUri(), $this->getRequest()->getQuery());
 
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $paginationControl = $viewHelperManager->get('paginationControl');
+
+        $data['pagination'] = $paginationControl(
+            $data['paginator'], 'Sliding', 'crud/pagination', [
+            'baseUri' => $this->getBaseUri()
+        ]);
+
         // Title for the resource list
         $data['title'] = sprintf('%s List', $this->getResourceTitle());
 

@@ -10,15 +10,12 @@ use Foundation\Entity\EntityInterface;
 abstract class AbstractCrudRepository extends Repository
 {
 
-    public function fetchList($offset = Repository::PAGINATION_OFFSET_START, $max = Repository::PAGINATION_MAX_ROWS)
+    public function fetchList()
     {
         $dql = sprintf('SELECT i FROM %s i ORDER BY i.created DESC', $this->getEntityName());
 
         $em = $this->getEntityManager();
         $query = $em->createQuery($dql);
-
-        $query->setFirstResult($offset);
-        $query->setMaxResults($max);
 
         $paginator = new Paginator($query);
 

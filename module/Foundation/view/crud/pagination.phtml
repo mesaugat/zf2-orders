@@ -1,27 +1,54 @@
-<?php if ($noOfPages > 1): ?>
-    <nav class="pull-right">
-        <ul class="pagination">
-            <?php if (isset($links['prev'])): ?>
-                <li>
-                    <a href="<?php echo $links['prev'] ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            <?php endif; ?>
+<?php if ($this->pageCount > 0): ?>
+    <div class="clearfix">
+        <nav class="pull-right">
+            <ul class="pagination">
+                <!-- Previous page link -->
+                <?php if (isset($this->previous)): ?>
+                    <li>
+                        <a href="<?php echo $this->baseUri; ?>?page=<?php echo $this->previous; ?>"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="disabled" aria-label="Previous">
+                        <a>
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
 
-            <?php for ($p = 1; $p <= $noOfPages; $p++): ?>
-                <li class="<?php echo $p == $page ? 'active' : '' ?>">
-                    <a href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a>
-                </li>
-            <?php endfor; ?>
+                <!-- Numbered page links -->
+                <?php foreach ($this->pagesInRange as $page): ?>
+                    <?php if ($page != $this->current): ?>
+                        <li>
+                            <a href="<?php echo $this->baseUri; ?>?page=<?php echo $page; ?>">
+                                <?php echo $page; ?>
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="active">
+                            <a><?php echo $page; ?></a>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
 
-            <?php if (isset($links['next'])): ?>
-                <li>
-                    <a href="<?php echo $links['next'] ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </nav>
+                <!-- Next page link -->
+                <?php if (isset($this->next)): ?>
+                    <li>
+                        <a href="<?php echo $this->baseUri; ?>?page=<?php echo $this->next; ?>"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="disabled" aria-label="Next">
+                        <a>
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </div>
 <?php endif; ?>
