@@ -52,6 +52,6 @@ return [
     'view_manager' => [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',
-        ],
+        ]
     ]
 ];

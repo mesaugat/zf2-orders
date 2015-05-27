@@ -7,7 +7,7 @@
 </div>
 <?php if ($this->isAllowed('roles', 'create')) { ?>
     <div class="row">
-        <a class="btn btn-primary" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
+        <a class="btn btn-primary" href="<?php echo $this->url('roles/add'); ?>">Create New</a>
     </div>
 <?php } ?>
 <?php if (empty($items)): ?>
@@ -19,33 +19,7 @@
 <?php else: ?>
 <div class="row">
     <div class="clearfix">
-        <?php if ($noOfPages > 1): ?>
-            <nav class="pull-right">
-                <ul class="pagination">
-                    <?php if (isset($links['prev'])): ?>
-                        <li>
-                            <a href="<?php echo $links['prev'] ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
-                    <?php for ($p = 1; $p <= $noOfPages; $p++): ?>
-                        <li class="<?php echo $p == $page ? 'active' : '' ?>">
-                            <a href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <?php if (isset($links['next'])): ?>
-                        <li>
-                            <a href="<?php echo $links['next'] ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </nav>
-        <?php endif; ?>
+        <?php echo $this->partial('crud/pagination'); ?>
     </div>
     <hr/>
     <table class="table table-striped">

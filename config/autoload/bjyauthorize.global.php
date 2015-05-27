@@ -51,15 +51,15 @@ return [
                 ['route' => 'roles/add', 'roles' => ['admin']],
                 ['route' => 'roles/edit', 'roles' => ['admin']],
                 ['route' => 'roles/delete', 'roles' => ['admin']],
-                //home
-                ['route' => 'zfcuser', 'roles' => ['user']],
-                ['route' => 'zfcuser/logout', 'roles' => ['user']],
-                ['route' => 'zfcuser/changeemail', 'roles' => ['user']],
-                ['route' => 'zfcuser/changepassword', 'roles' => ['user']],
+                //zfcuser
+                ['route' => 'zfcuser', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/logout', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/changeemail', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/changepassword', 'roles' => ['user', 'guest']],
                 ['route' => 'zfcuser/login', 'roles' => ['guest']],
                 ['route' => 'zfcuser/authenticate', 'roles' => ['guest']],
                 ['route' => 'zfcuser/register', 'roles' => ['guest']],
-                // Below is the default index action used by the ZendSkeletonApplication
+                // home
                 ['route' => 'home', 'roles' => ['guest', 'user']],
             ]
         ]
