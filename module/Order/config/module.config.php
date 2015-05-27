@@ -49,6 +49,7 @@ return [
     ],
     // The following section is new and should be added to your file
     'router' => require __DIR__ . '/router.config.php',
+    'navigation' => require __DIR__ . '/navigation.config.php',
     'view_manager' => [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',
