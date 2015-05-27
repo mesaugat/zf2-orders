@@ -1,0 +1,24 @@
+<!-- Modal -->
+<div class="modal fade" id="delete-confirmation-modal" tabindex="-1" role="dialog"
+     aria-labelledby="delete-confirmation-modal-title" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="delete-confirmation-modal-title">
+                    <?php echo $this->translate('delete_confirmation.title') ?>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <?php echo $this->translate('delete_confirmation.message'); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary yes-button">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

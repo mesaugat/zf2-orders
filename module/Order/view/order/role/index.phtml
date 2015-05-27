@@ -45,7 +45,8 @@
                     <?php } ?>
                     <?php if ($this->isAllowed('roles', 'delete')) { ?>
                         <a class="btn btn-sm btn-danger" href="<?php echo $this->url('roles/delete',
-                            ['id' => $item->getId()]); ?>">Delete</a>
+                            ['id' => $item->getId()]); ?>"
+                           data-confirm-delete="true">Delete</a>
                     <?php } ?>
                 </td>
             </tr>
@@ -53,3 +54,4 @@
     </table>
     <?php endif; ?>
 </div>
+<?php echo $this->partial('crud/delete-confirm-modal'); ?>

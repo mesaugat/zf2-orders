@@ -111,17 +111,9 @@ abstract class AbstractCrudController extends Controller
     public function deleteAction()
     {
         $item = $this->service->fetch($this->params('id'));
-        $request = $this->getRequest();
+        $this->service->remove($item);
 
-        if ($request->isPost()) {
-            if ('yes' === $request->getPost('delete_confirmation', 'no')) {
-                $this->service->remove($item);
-            }
-
-            return $this->redirectToIndex();
-        }
-
-        return compact('item');
+        return $this->redirectToIndex();
     }
 
     /**
@@ -129,7 +121,8 @@ abstract class AbstractCrudController extends Controller
      *
      * @return \Zend\Http\Response
      */
-    public function redirectToIndex()
+    public
+    function redirectToIndex()
     {
         return $this->redirect()->toUrl($this->getBaseUri());
     }
@@ -137,7 +130,8 @@ abstract class AbstractCrudController extends Controller
     /**
      * @return string
      */
-    protected function getRouteName()
+    protected
+    function getRouteName()
     {
         return $this->getEvent()->getRouteMatch()->getMatchedRouteName();
     }
