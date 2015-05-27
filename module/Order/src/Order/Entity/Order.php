@@ -4,6 +4,7 @@ namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Foundation\Entity\EntityInterface;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
 
@@ -12,7 +13,8 @@ use Foundation\Entity\Traits\PrimaryKeyTrait;
  * @ORM\Table(name="orders")
  * @ORM\HasLifecycleCallbacks
  */
-class Order {
+class Order implements EntityInterface
+{
 
     use PrimaryKeyTrait, CreatedDateTrait;
 
@@ -94,7 +96,8 @@ class Order {
     /**
      * @param OrderItem $orderItem
      */
-    public  function addOrderItem(OrderItem $orderItem) {
+    public function addOrderItem(OrderItem $orderItem)
+    {
         $orderItem->setOrder($this);
         $this->orderItems[] = $orderItem;
     }

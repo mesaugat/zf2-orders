@@ -3,6 +3,7 @@
 namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Foundation\Entity\EntityInterface;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
 use ZfcUser\Entity\UserInterface;
@@ -14,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface, ProviderInterface
+class User implements EntityInterface, UserInterface, ProviderInterface
 {
     use PrimaryKeyTrait, CreatedDateTrait;
 

@@ -33,14 +33,14 @@ abstract class AbstractCrudService extends Service
      * @param $data
      * @return bool
      */
-    public function createNew($data)
+    public function save($data)
     {
         $this->form->setData($data);
 
         if ($this->form->isValid()) {
-            $item = $this->repository->createNew($this->form->getData());
+            $entity = $this->repository->save($this->form->getData());
 
-            return $this->isEntityInstance($item);
+            return $this->isEntityInstance($entity);
         }
 
         return false;
@@ -56,34 +56,11 @@ abstract class AbstractCrudService extends Service
         $this->form->bind($object);
     }
 
-    /**
-     * @param $data
-     * @return bool
-     * @throws \Exception
-     */
-    public function update($data)
-    {
-        if (!$this->isEntityInstance($this->form->getObject())) {
-            throw new \Exception($this->translate('exception.form_not_bound'));
-        }
-
-        $this->form->setData($data);
-
-        if ($this->form->isValid()) {
-            $item = $this->form->getData();
-            $this->repository->update($item);
-
-            return true;
-        }
-
-        return false;
-    }
-
 
     /**
      * Fetches list of Doctrine entites from the repository with Pagination
      *
-     * @param string $baseUri       Base uri of listing page for Pagination
+     * @param string $baseUri Base uri of listing page for Pagination
      * @param Parameters $query
      * @return array
      * @throws NotFoundException
@@ -167,8 +144,8 @@ abstract class AbstractCrudService extends Service
     public function prepareForm($actionUri)
     {
         return $this->form
-                ->setAttribute('action', $actionUri)
-                ->prepare();
+            ->setAttribute('action', $actionUri)
+            ->prepare();
     }
 
     /**

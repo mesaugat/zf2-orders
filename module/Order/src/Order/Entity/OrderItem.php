@@ -3,13 +3,14 @@
 namespace Order\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Foundation\Entity\EntityInterface;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="order_items")
  */
-class OrderItem
+class OrderItem implements EntityInterface
 {
     use PrimaryKeyTrait;
     /**

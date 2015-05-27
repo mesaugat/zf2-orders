@@ -25,6 +25,8 @@ return [
             ],
         ],
         'rule_providers' => [
+
+            // View level access control
             BjyAuthorize\Provider\Rule\Config::class => [
                 'allow' => [
                     //items
@@ -36,5 +38,30 @@ return [
                 ],
             ],
         ],
+        'guards' => [
+            // route guards
+            BjyAuthorize\Guard\Route::class => [
+                // items
+                ['route' => 'items', 'roles' => ['user', 'guest']],
+                ['route' => 'items/add', 'roles' => ['admin']],
+                ['route' => 'items/edit', 'roles' => ['admin']],
+                ['route' => 'items/delete', 'roles' => ['admin']],
+                // roles
+                ['route' => 'roles', 'roles' => ['admin', 'operator']],
+                ['route' => 'roles/add', 'roles' => ['admin']],
+                ['route' => 'roles/edit', 'roles' => ['admin']],
+                ['route' => 'roles/delete', 'roles' => ['admin']],
+                //home
+                ['route' => 'zfcuser', 'roles' => ['user']],
+                ['route' => 'zfcuser/logout', 'roles' => ['user']],
+                ['route' => 'zfcuser/changeemail', 'roles' => ['user']],
+                ['route' => 'zfcuser/changepassword', 'roles' => ['user']],
+                ['route' => 'zfcuser/login', 'roles' => ['guest']],
+                ['route' => 'zfcuser/authenticate', 'roles' => ['guest']],
+                ['route' => 'zfcuser/register', 'roles' => ['guest']],
+                // Below is the default index action used by the ZendSkeletonApplication
+                ['route' => 'home', 'roles' => ['guest', 'user']],
+            ]
+        ]
     ],
 ];

@@ -33,8 +33,8 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
-            'Order\Controller\Role' => 'Order\Factory\RoleControllerFactory',
+            'item-controller' => 'Order\Factory\ItemControllerFactory',
+            'role-controller' => 'Order\Factory\RoleControllerFactory',
         ],
     ],
     'translator' => [

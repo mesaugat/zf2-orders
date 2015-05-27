@@ -3,33 +3,96 @@
 return [
     'routes' => [
         'items' => [
-            'type' => 'segment',
+            'type' => 'literal',
             'options' => [
-                'route' => '/items[/:action][/:id]',
-                'constraints' => [
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id' => '\d+',
-                ],
+                'route' => '/items',
                 'defaults' => [
-                    'controller' => 'Order\Controller\Item',
+                    'controller' => 'item-controller',
                     'action' => 'index',
                 ],
             ],
+            'may_terminate' => true,
+            'child_routes' => [
+                'add' => [
+                    'type' => 'literal',
+                    'options' => [
+                        'route' => '/add',
+                        'defaults' => [
+                            'action' => 'add'
+                        ]
+                    ]
+                ],
+                'edit' => [
+                    'type' => 'segment',
+                    'options' => [
+                        'route' => '/edit/:id',
+                        'constraints' => [
+                            'id' => '\d+',
+                        ],
+                        'defaults' => [
+                            'action' => 'edit'
+                        ]
+                    ]
+                ],
+                'delete' => [
+                    'type' => 'segment',
+                    'options' => [
+                        'route' => '/delete/:id',
+                        'constraints' => [
+                            'id' => '\d+',
+                        ],
+                        'defaults' => [
+                            'action' => 'delete'
+                        ]
+                    ]
+                ]
+            ]
         ],
         'roles' => [
-            'type' => 'segment',
+            'type' => 'literal',
             'options' => [
-                'route' => '/roles[/:action][/:id]',
-                'constraints' => [
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id' => '\d+',
-
-                ],
+                'route' => '/roles',
                 'defaults' => [
-                    'controller' => 'Order\Controller\Role',
+                    'controller' => 'role-controller',
                     'action' => 'index',
                 ],
             ],
-        ],
+            'may_terminate' => true,
+            'child_routes' => [
+                'add' => [
+                    'type' => 'literal',
+                    'options' => [
+                        'route' => '/add',
+                        'defaults' => [
+                            'action' => 'add'
+                        ]
+                    ]
+                ],
+                'edit' => [
+                    'type' => 'segment',
+                    'options' => [
+                        'route' => '/edit/:id',
+                        'constraints' => [
+                            'id' => '\d+',
+                        ],
+                        'defaults' => [
+                            'action' => 'edit'
+                        ]
+                    ]
+                ],
+                'delete' => [
+                    'type' => 'segment',
+                    'options' => [
+                        'route' => '/delete/:id',
+                        'constraints' => [
+                            'id' => '\d+',
+                        ],
+                        'defaults' => [
+                            'action' => 'delete'
+                        ]
+                    ]
+                ]
+            ]
+        ]
     ],
 ];

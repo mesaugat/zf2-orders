@@ -3,9 +3,24 @@
 namespace Order\Form;
 
 use Foundation\AbstractForm as Form;
+use Order\Entity\Repository\RoleRepository;
+use Zend\Form\FormInterface;
+use Zend\InputFilter\InputFilterInterface;
 
 class RoleForm extends Form
 {
+    protected $repository;
+
+    public function __construct(InputFilterInterface $filter = null, RoleRepository $repository, $options = [])
+    {
+        $this->repository = $repository;
+
+        $entityClass = $repository->getClassName();
+        $prototypeObject = new $entityClass();
+
+        parent::__construct($filter, $prototypeObject, $options);
+    }
+
     protected function initialize()
     {
         $this->add([
@@ -31,16 +46,14 @@ class RoleForm extends Form
             ],
         ]);
 
+        $roleSelectList = $this->repository->getRoleSelectList();
 
         $this->add([
             'name' => 'parentId',
             'type' => 'Select',
             'options' => [
                 'label' => 'Parent',
-                'value_options' => [
-                    '0' => 'None',
-                    '1' => 'Foo'
-                ],
+                'value_options' => $roleSelectList,
                 'column-size' => 'sm-8'
             ],
         ]);
@@ -58,4 +71,17 @@ class RoleForm extends Form
             ],
         ]);
     }
+
+    public function getData($flag = FormInterface::VALUES_NORMALIZED)
+    {
+        $entity = parent::getData($flag);
+        $parentId = parent::get('parentId')->getValue();
+        if ($parentId) {
+            $entity->setParent($this->repository->find($parentId));
+        }
+
+        return $entity;
+    }
+
+
 }
