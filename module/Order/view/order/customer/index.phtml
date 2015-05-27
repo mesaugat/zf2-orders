@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row">
+        <?php $this->headTitle($title); ?>
+        <h1><?php echo $this->escapeHtml($title); ?> <span class="pull-right">Total: <?php echo $total ?></span></h1>
+
+        <p><a class="btn btn-primary" href="<?php echo $this->url('customers', ['action' => 'add']); ?>">Create New</a>
+        </p>
+
+        <?php if (empty($items)): ?>
+            <div class="alert alert-info"><?php echo $this->translate('no_records_found') ?></div>
+        <?php else: ?>
+            <div>
+                <?php if ($noOfPages > 1): ?>
+                    <nav class="pull-right">
+                        <ul class="pagination">
+                            <?php if (isset($links['prev'])): ?>
+                                <li>
+                                    <a href="<?php echo $links['prev'] ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php for ($p = 1; $p <= $noOfPages; $p++): ?>
+                                <li class="<?php echo $p == $page ? 'active' : '' ?>">
+                                    <a href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a>
+                                </li>
+                            <?php endfor; ?>
+
+                            <?php if (isset($links['next'])): ?>
+                                <li>
+                                    <a href="<?php echo $links['next'] ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </nav>
+                <?php endif; ?>
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+                <?php foreach ($items as $index => $customer): ?>
+                    <tr>
+                        <td><?php echo $index + 1 ?></td>
+                        <td><?php echo $customer->getName() ?></td>
+                        <td><?php echo $customer->getAddress() ?></td>
+                        <td><?php echo $customer->getCreated()->format('M d, Y h:i:s A') ?></td>
+                        <td>
+                            <a class="btn btn-sm btn-info"
+                               href="<?php echo $this->url('customers',
+                                   ['action' => 'edit', 'id' => $customer->getId()]); ?>">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="<?php echo $this->url('customers',
+                                ['action' => 'delete', 'id' => $customer->getId()]); ?>">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
+    </div>
+</div>

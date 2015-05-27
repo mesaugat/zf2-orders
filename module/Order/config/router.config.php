@@ -31,5 +31,20 @@ return [
                 ],
             ],
         ],
-    ],
+        'customers' => [
+            'type' => 'segment',
+            'options' => [
+                'route' => '/customers[/:action][/:id]',
+                'constraints' => [
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id' => '\d+',
+
+                ],
+                'defaults' => [
+                    'controller' => 'Order\Controller\Customer',
+                    'action' => 'index',
+                ],
+            ],
+        ],
+    ]
 ];
