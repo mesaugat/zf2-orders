@@ -40,9 +40,9 @@ return [
         ],
         'guards' => [
             // route guards
-            /*BjyAuthorize\Guard\Route::class => [
+            BjyAuthorize\Guard\Route::class => [
                 // items
-                ['route' => 'items', 'roles' => ['admin', 'operator', 'guest']],
+                ['route' => 'items', 'roles' => ['user', 'guest']],
                 ['route' => 'items/add', 'roles' => ['admin']],
                 ['route' => 'items/edit', 'roles' => ['admin']],
                 ['route' => 'items/delete', 'roles' => ['admin']],
@@ -52,9 +52,16 @@ return [
                 ['route' => 'roles/edit', 'roles' => ['admin']],
                 ['route' => 'roles/delete', 'roles' => ['admin']],
                 //home
-                ['route' => 'home', 'roles' => ['admin', 'operator', 'guest']],
-
-            ]*/
+                ['route' => 'zfcuser', 'roles' => ['user']],
+                ['route' => 'zfcuser/logout', 'roles' => ['user']],
+                ['route' => 'zfcuser/changeemail', 'roles' => ['user']],
+                ['route' => 'zfcuser/changepassword', 'roles' => ['user']],
+                ['route' => 'zfcuser/login', 'roles' => ['guest']],
+                ['route' => 'zfcuser/authenticate', 'roles' => ['guest']],
+                ['route' => 'zfcuser/register', 'roles' => ['guest']],
+                // Below is the default index action used by the ZendSkeletonApplication
+                ['route' => 'home', 'roles' => ['guest', 'user']],
+            ]
         ]
     ],
 ];
