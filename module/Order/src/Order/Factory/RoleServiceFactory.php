@@ -3,7 +3,6 @@
 namespace Order\Factory;
 
 use Order\Filter\RoleFilter;
-use Order\Form\RoleForm;
 use Order\Service\RoleService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -22,8 +21,7 @@ class RoleServiceFactory implements FactoryInterface
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Order\Entity\Role');
         $translator = $serviceLocator->get('translator');
-        $form = new RoleForm(new RoleFilter($translator), $repository);
 
-        return new RoleService($serviceLocator, $repository, $form);
+        return new RoleService($serviceLocator, $repository, new RoleFilter($translator));
     }
 }

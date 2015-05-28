@@ -2,74 +2,80 @@
 
 namespace Foundation\Crud;
 
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Foundation\AbstractRepository;
+use Foundation\Entity\EntityInterface;
+use Foundation\Exception\ValidationException;
 use InvalidArgumentException;
 use Foundation\AbstractService as Service;
 use Foundation\Exception\NotFoundException;
-use Zend\Form\Form;
 use Zend\Paginator\Paginator;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Parameters;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
-use Zend\View\Helper\PaginationControl;
-use Zend\View\Model\ViewModel;
+use Foundation\AbstractFilter as Filter;
 
 abstract class AbstractCrudService extends Service
 {
-    protected $form;
     protected $repository;
+    protected $filter;
 
     /**
      * @param ServiceLocatorInterface $serviceManager
      * @param AbstractCrudRepository $repository
-     * @param Form $form
+     * @param Filter $filter
      */
-    public function __construct(ServiceLocatorInterface $serviceManager, CrudRepository $repository, Form $form)
+    public function __construct(ServiceLocatorInterface $serviceManager, CrudRepository $repository, Filter $filter)
     {
         parent::__construct($serviceManager);
 
         $this->repository = $repository;
-        $this->form = $form;
+        $this->filter = $filter;
+    }
+
+    /**
+     * Hydrates
+     * @param array $data
+     * @return EntityInterface
+     */
+    protected function hydrateData(array $data)
+    {
+        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $hydrator = new DoctrineObject($em);
+        $entityClass = $this->repository->getClassName();
+
+        return $hydrator->hydrate($data, new $entityClass());
     }
 
     /**
      * @param $data
      * @return bool
+     * @throws ValidationException
      */
     public function save($data)
     {
-        $this->form->setData($data);
+        $this->filter->setData($data);
 
-        if ($this->form->isValid()) {
-            $entity = $this->repository->save($this->form->getData());
-
-            return $this->isEntityInstance($entity);
+        if (!$this->filter->isValid()) {
+            throw new ValidationException($this->translate('validation.generic_failed'), $this->filter->getMessages());
         }
 
-        return false;
-    }
+        // Hydrates the filtered data into corresponding Entity Object
+        $entity = $this->hydrateData($this->filter->getValues());
+        $this->repository->save($entity);
 
-    /**
-     * Bind an object to the form
-     *
-     * @param object $object
-     */
-    public function bindToForm($object)
-    {
-        $this->form->bind($object);
+        return true;
     }
-
 
     /**
      * Fetches list of Doctrine entites from the repository with Pagination
      *
-     * @param string $baseUri Base uri of listing page for Pagination
      * @param Parameters $query
      * @return array
      * @throws NotFoundException
      */
-    public function fetchList($baseUri, Parameters $query)
+    public function fetchList(Parameters $query)
     {
         $max = (int)$query->get('max', AbstractRepository::PAGINATION_MAX_ROWS);
         $page = (int)$query->get('page', 1);
@@ -100,14 +106,13 @@ abstract class AbstractCrudService extends Service
     }
 
     /**
-     * @param $item
-     * @return bool
+     * @param $id
+     * @throws NotFoundException
      */
-    public function remove($item)
+    public function remove($id)
     {
-        $this->repository->remove($item);
-
-        return true;
+        $entity = $this->fetch($id);
+        $this->repository->remove($entity);
     }
 
     /**
@@ -117,39 +122,12 @@ abstract class AbstractCrudService extends Service
      */
     public function fetch($id)
     {
-        $item = $this->repository->find($id);
-        if ($item === null) {
+        $entity = $this->repository->find($id);
+        if ($entity === null) {
             throw new NotFoundException($this->translate('exception.item_not_found'));
         }
 
-        return $item;
+        return $entity;
     }
 
-    /**
-     * @return Form
-     */
-    public function getForm()
-    {
-        return $this->form;
-    }
-
-    /**
-     * @param $actionUri
-     * @return Form
-     */
-    public function prepareForm($actionUri)
-    {
-        return $this->form
-            ->setAttribute('action', $actionUri)
-            ->prepare();
-    }
-
-    /**
-     * @param $item
-     * @return bool
-     */
-    protected function isEntityInstance($item)
-    {
-        return is_a($item, $this->repository->getClassName());
-    }
 }
