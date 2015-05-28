@@ -1,6 +1,6 @@
 <div ng-include="'app/components/navbar/navbar.html'"></div>
 
-<div class="container" ng-controller="CustomersController">
+<div class="container" ng-controller="ItemsCreateController">
 	<h1>Items</h1>
 
 	<div class="text-right">
@@ -11,12 +11,12 @@
 	  	<fieldset class="form-horizontal">
 			<div class="form-group col-sm-8">
 				<label>Name</label>
-				<input type="text" class="form-control">
+				<input type="text" class="form-control" ng-model="form.name">
 			</div>
 
 			<div class="form-group col-sm-8">
 				<label>Rate</label>
-				<input type="text" class="form-control">
+				<input type="text" class="form-control" ng-model="form.rate">
 			</div>
 
 			<div class="form-group col-sm-8 col-sm-offset-2">
@@ -24,6 +24,8 @@
 			</div>
 		</fieldset>
 	</form>
+
+	{{form}}
 </div>
 
 <div ng-include="'app/components/footer/footer.html'"></div>

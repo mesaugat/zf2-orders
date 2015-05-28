@@ -6,6 +6,28 @@
   <div class="text-right">
     <a class="btn" href="#/items/create">Create New</a>
   </div>
+
+	<table class="table table-striped">
+  	<tbody>
+      <tr>
+      	<th>S.No.</th>
+      	<th>Name</th>
+      	<th>Rate</th>
+      	<th>Created</th>
+      	<th></th>
+    	</tr>
+    	<tr ng-repeat="item in items">
+      	<td>{{index}}</td>
+      	<td>{{item.name}}</td>
+      	<td>{{item.rate}}</td>
+      	<td>{{item.created}}</td>
+      	<td>
+      	<a class="btn btn-sm btn-info" href="#/items/edit/1">Edit</a>
+      	<a class="btn btn-sm btn-danger" href="#" ng-click="confirmDelete(index);">Delete</a>
+      	</td>
+    	</tr>
+  	</tbody>
+  </table>
 </div>
 
 <div ng-include="'app/components/footer/footer.html'"></div>
