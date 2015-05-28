@@ -1,0 +1,29 @@
+<div ng-include="'app/components/navbar/navbar.html'"></div>
+
+<div class="container" ng-controller="CustomersController">
+	<h1>Items</h1>
+
+	<div class="text-right">
+		<a class="btn" href="#/items/create">Create New</a>
+	</div>
+
+	<form>
+	  	<fieldset class="form-horizontal">
+			<div class="form-group col-sm-8">
+				<label>Name</label>
+				<input type="text" class="form-control">
+			</div>
+
+			<div class="form-group col-sm-8">
+				<label>Rate</label>
+				<input type="text" class="form-control">
+			</div>
+
+			<div class="form-group col-sm-8 col-sm-offset-2">
+				<button class="btn-primary btn">Submit</button>
+			</div>
+		</fieldset>
+	</form>
+</div>
+
+<div ng-include="'app/components/footer/footer.html'"></div>

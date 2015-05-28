@@ -9,3 +9,5 @@ composer.lock
 /vendor
 config/autoload/*.testing.php
 tests/_output/*
+.DS_Store
+public/frontend
