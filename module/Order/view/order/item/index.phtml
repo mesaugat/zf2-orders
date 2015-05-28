@@ -1,80 +1,51 @@
-<div class="container">
-    <div class="row">
-        <?php $this->headTitle($title); ?>
-        <h1>
-            <?php echo $this->escapeHtml($title); ?>
-            <small class="pull-right">Total: <?php echo $total ?></small>
-        </h1>
-
-        <?php if ($this->isAllowed('items', 'create')) { ?>
-            <div>
-                <a class="btn btn-primary" href="<?php echo $this->url('items', ['action' => 'add']); ?>">Create New</a>
-            </div>
-        <?php } ?>
-
-        <?php if (empty($items)): ?>
-            <div class="alert alert-info">
-                <?php echo $this->translate('no_records_found') ?>
-            </div>
-        <?php else: ?>
-            <div>
-                <?php if ($noOfPages > 1): ?>
-                    <nav class="pull-right">
-                        <ul class="pagination">
-                            <?php if (isset($links['prev'])): ?>
-                                <li>
-                                    <a href="<?php echo $links['prev'] ?>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-
-                            <?php for ($p = 1; $p <= $noOfPages; $p++): ?>
-                                <li class="<?php echo $p == $page ? 'active' : '' ?>">
-                                    <a href="<?php echo $pageLink($p) ?>"><?php echo $p ?></a>
-                                </li>
-                            <?php endfor; ?>
-
-                            <?php if (isset($links['next'])): ?>
-                                <li>
-                                    <a href="<?php echo $links['next'] ?>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </nav>
-                <?php endif; ?>
-            </div>
-            <table class="table table-striped">
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Rate (NRs.)</th>
-                    <th>Created</th>
-                    <th></th>
-                </tr>
-                <?php foreach ($items as $index => $item): ?>
-                    <tr>
-                        <td><?php echo $index + 1 ?></td>
-                        <td><?php echo $item->getName() ?></td>
-                        <td><?php echo $item->getRate() ?></td>
-                        <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
-                        <td>
-
-                            <?php if ($this->isAllowed('items', 'update')) { ?>
-                                <a class="btn btn-sm btn-info"
-                                   href="<?php echo $this->url('items',
-                                       ['action' => 'edit', 'id' => $item->getId()]); ?>">Edit</a>
-                            <?php } ?>
-                            <?php if ($this->isAllowed('items', 'delete')) { ?>
-                                <a class="btn btn-sm btn-danger" href="<?php echo $this->url('items',
-                                    ['action' => 'delete', 'id' => $item->getId()]); ?>">Delete</a>
-                            <?php } ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        <?php endif; ?>
-    </div>
+<div class="row">
+    <?php $this->headTitle($title); ?>
+    <h1 class="clearfix">
+        <?php echo $this->escapeHtml($title); ?>
+        <small class="pull-right">Total: <?php echo $total ?></small>
+    </h1>
 </div>
+<?php if ($this->isAllowed('items', 'create')) { ?>
+    <div class="row">
+        <a class="btn btn-primary" href="<?php echo $this->url('items/add'); ?>">Create New</a>
+    </div>
+<?php } ?>
+<?php if (empty($items)): ?>
+    <div class="row">
+        <div class="alert alert-info"> <?php echo $this->translate('no_records_found') ?> </div>
+    </div>
+<?php else: ?>
+<div class="row">
+    <?php echo $pagination; ?>
+    <hr/>
+    <table class="table table-striped">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Rate (NRs.)</th>
+            <th>Created</th>
+            <th></th>
+        </tr>
+        <?php foreach ($paginator as $index => $item): ?>
+            <tr>
+                <td><?php echo $index + 1 ?></td>
+                <td><?php echo $item->getName() ?></td>
+                <td><?php echo $item->getRate() ?></td>
+                <td><?php echo $item->getCreated()->format('M d, Y h:i:s A') ?></td>
+                <td>
+                    <?php if ($this->isAllowed('items', 'update')) { ?>
+                        <a class="btn btn-sm btn-info"
+                           href="<?php echo $this->url('items/edit', ['id' => $item->getId()]); ?>">Edit</a>
+                    <?php } ?>
+                    <?php if ($this->isAllowed('items', 'delete')) { ?>
+                        <a class="btn btn-sm btn-danger"
+                           href="<?php echo $this->url('items/delete', ['id' => $item->getId()]); ?>"
+                           data-confirm-delete="true">Delete</a>
+                    <?php } ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <?php endif; ?>
+</div>
+<?php echo $this->partial('crud/delete-confirm-modal'); ?>

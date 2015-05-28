@@ -2,14 +2,18 @@
 
 namespace Foundation\Crud;
 
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Foundation\AbstractRepository;
 use InvalidArgumentException;
 use Foundation\AbstractService as Service;
 use Foundation\Exception\NotFoundException;
 use Zend\Form\Form;
+use Zend\Paginator\Paginator;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Parameters;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
+use Zend\View\Helper\PaginationControl;
+use Zend\View\Model\ViewModel;
 
 abstract class AbstractCrudService extends Service
 {
@@ -33,14 +37,14 @@ abstract class AbstractCrudService extends Service
      * @param $data
      * @return bool
      */
-    public function createNew($data)
+    public function save($data)
     {
         $this->form->setData($data);
 
         if ($this->form->isValid()) {
-            $item = $this->repository->createNew($this->form->getData());
+            $entity = $this->repository->save($this->form->getData());
 
-            return $this->isEntityInstance($item);
+            return $this->isEntityInstance($entity);
         }
 
         return false;
@@ -56,34 +60,11 @@ abstract class AbstractCrudService extends Service
         $this->form->bind($object);
     }
 
-    /**
-     * @param $data
-     * @return bool
-     * @throws \Exception
-     */
-    public function update($data)
-    {
-        if (!$this->isEntityInstance($this->form->getObject())) {
-            throw new \Exception($this->translate('exception.form_not_bound'));
-        }
-
-        $this->form->setData($data);
-
-        if ($this->form->isValid()) {
-            $item = $this->form->getData();
-            $this->repository->update($item);
-
-            return true;
-        }
-
-        return false;
-    }
-
 
     /**
      * Fetches list of Doctrine entites from the repository with Pagination
      *
-     * @param string $baseUri       Base uri of listing page for Pagination
+     * @param string $baseUri Base uri of listing page for Pagination
      * @param Parameters $query
      * @return array
      * @throws NotFoundException
@@ -97,33 +78,25 @@ abstract class AbstractCrudService extends Service
             throw new InvalidArgumentException($this->translate('exception.invalid_page'));
         }
 
-        $offset = ($page - 1) * $max;
+        $doctrinePaginator = $this->repository->fetchList();
 
-        $list = $this->repository->fetchList($offset, $max);
-        $items = $list->getIterator()->getArrayCopy();
-        $total = $list->count();
-        $noOfPages = (int)(ceil($total / $max)) ?: 1;
+        $paginator = new Paginator(new DoctrinePaginator($doctrinePaginator));
+        $paginator
+            ->setCurrentPageNumber($page)
+            ->setItemCountPerPage($max);
+
+        $items = $paginator->getIterator()->getArrayCopy();
+        $total = $paginator->getTotalItemCount();
+
+        $noOfPages = $paginator->count();
 
         if ($total > 0) {
-            if ($page > $noOfPages || $page < 1) {
+            if ($page > $noOfPages) {
                 throw new NotFoundException($this->translate('exception.page_not_found'));
             }
         }
 
-        $pageLink = function ($page) use ($baseUri, $query) {
-            return $baseUri . '?' . http_build_query($query->set('page', $page)->toArray());
-        };
-
-        $links = [];
-        if ($page > 1) {
-            $links['prev'] = $pageLink($page - 1);
-        }
-
-        if ($page < $noOfPages) {
-            $links['next'] = $pageLink($page + 1);
-        }
-
-        return compact('items', 'links', 'total', 'noOfPages', 'pageLink', 'page');
+        return compact('items', 'total', 'paginator');
     }
 
     /**
@@ -167,8 +140,8 @@ abstract class AbstractCrudService extends Service
     public function prepareForm($actionUri)
     {
         return $this->form
-                ->setAttribute('action', $actionUri)
-                ->prepare();
+            ->setAttribute('action', $actionUri)
+            ->prepare();
     }
 
     /**

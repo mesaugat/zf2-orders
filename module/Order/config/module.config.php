@@ -34,11 +34,10 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            'Order\Controller\Item' => 'Order\Factory\ItemControllerFactory',
-            'Order\Controller\Role' => 'Order\Factory\RoleControllerFactory',
-            'Order\Controller\Customer' => 'Order\Factory\CustomerControllerFactory'
+            'item-controller' => 'Order\Factory\ItemControllerFactory',
+            'role-controller' => 'Order\Factory\RoleControllerFactory',
+            'customer-controller' => 'Order\Factory\CustomerControllerFactory',
         ],
-
     ],
     'translator' => [
         'locale' => 'en_US',
@@ -52,9 +51,10 @@ return [
     ],
     // The following section is new and should be added to your file
     'router' => require __DIR__ . '/router.config.php',
+    'navigation' => require __DIR__ . '/navigation.config.php',
     'view_manager' => [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',
-        ],
+        ]
     ]
 ];

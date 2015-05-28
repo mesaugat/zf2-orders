@@ -3,7 +3,7 @@
     Are you sure that you want to delete
     '<?php echo $this->escapeHtml($item->getName()); ?>'?
 </p>
-<form action="<?php echo $this->url('items', ['action' => 'delete', 'id' => $item->getId()], true) ?>" method="post">
+<form action="<?php echo $this->url('items/delete', ['id' => $item->getId()], true) ?>" method="post">
     <input type="submit" name="delete_confirmation" value="yes">
     <input type="submit" name="delete_confirmation" value="no">
 </form>

@@ -2,6 +2,7 @@
 
 namespace Order\Factory;
 
+use Order\Entity\Customer;
 use Order\Form\CustomerForm;
 use Order\Filter\CustomerFilter;
 use Order\Service\CustomerService;
@@ -22,7 +23,7 @@ class CustomerServiceFactory implements FactoryInterface
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Order\Entity\Customer');
         $translator = $serviceLocator->get('translator');
-        $form = new CustomerForm(new CustomerFilter($translator));
+        $form = new CustomerForm(new CustomerFilter($translator), new Customer());
 
         return new CustomerService($serviceLocator, $repository, $form);
     }

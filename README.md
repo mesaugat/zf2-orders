@@ -26,6 +26,12 @@ in the required credentials if any.
 
     cp config/autoload/doctrine.local.php.example config/autoload/doctrine.local.php
     cp config/autoload/zdt.local.php.example config/autoload/zdt.local.php
+    
+Import Users & Roles
+--------------------
+Import default users and roles for ACL from the Postgresql dump file.
+
+    psql -U <username> -d <db name> -a -f data/userroles.sql
 
 Web Server Setup
 ----------------

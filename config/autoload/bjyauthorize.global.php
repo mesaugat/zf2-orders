@@ -21,10 +21,13 @@ return [
         'resource_providers' => [
             BjyAuthorize\Provider\Resource\Config::class => [
                 'items' => [],
-                'roles' => []
+                'roles' => [],
+                'customers' => [],
             ],
         ],
         'rule_providers' => [
+
+            // View level access control
             BjyAuthorize\Provider\Rule\Config::class => [
                 'allow' => [
                     //items
@@ -33,8 +36,41 @@ return [
                     //roles
                     [['admin'], 'roles', ['create', 'update', 'delete']],
                     [['admin', 'operator'], 'roles', ['read']],
+                    //roles
+                    [['admin'], 'customers', ['create', 'update', 'delete']],
+                    [['admin', 'operator'], 'customers', ['read']],
                 ],
             ],
         ],
+        'guards' => [
+            // route guards
+            BjyAuthorize\Guard\Route::class => [
+                // items
+                ['route' => 'items', 'roles' => ['user', 'guest']],
+                ['route' => 'items/add', 'roles' => ['admin']],
+                ['route' => 'items/edit', 'roles' => ['admin']],
+                ['route' => 'items/delete', 'roles' => ['admin']],
+                // roles
+                ['route' => 'roles', 'roles' => ['admin', 'operator']],
+                ['route' => 'roles/add', 'roles' => ['admin']],
+                ['route' => 'roles/edit', 'roles' => ['admin']],
+                ['route' => 'roles/delete', 'roles' => ['admin']],
+                // customers
+                ['route' => 'customers', 'roles' => ['user']],
+                ['route' => 'customers/add', 'roles' => ['admin', 'operator']],
+                ['route' => 'customers/edit', 'roles' => ['admin', 'operator']],
+                ['route' => 'customers/delete', 'roles' => ['admin', 'operator']],
+                //zfcuser
+                ['route' => 'zfcuser', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/logout', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/changeemail', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/changepassword', 'roles' => ['user', 'guest']],
+                ['route' => 'zfcuser/login', 'roles' => ['guest']],
+                ['route' => 'zfcuser/authenticate', 'roles' => ['guest']],
+                ['route' => 'zfcuser/register', 'roles' => ['guest']],
+                // home
+                ['route' => 'home', 'roles' => ['guest', 'user']],
+            ]
+        ]
     ],
 ];

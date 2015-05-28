@@ -34,17 +34,20 @@ abstract class AbstractCrudController extends Controller
     protected function getBaseUri()
     {
         // get router config
-        $routerConfig = $this->getServiceLocator()->get('config')['router'];
+        $routesConfig = $this->getServiceLocator()->get('config')['router']['routes'];
         $matchedRouteName = $this->getRouteName();
 
-        // get the matched route config
-        $route = $routerConfig['routes'][$matchedRouteName];
-        $pattern = $route['options']['route'];
+        // Get the base route
+        if (isset($routesConfig[$matchedRouteName])) {
+            $baseRoute = $routesConfig[$matchedRouteName];
+        } else {
+            $baseRoute = substr($matchedRouteName, 0, strpos($matchedRouteName, '/'));
+            $baseRoute = $routesConfig[$baseRoute];
+        }
 
-        // Extract the base uri from the pattern
-        preg_match('/^\/([a-z0-9\-\.]+)/i', $pattern, $matches);
+        $uri = $baseRoute['options']['route'];
 
-        return !empty($matches) ? $matches[0] : null;
+        return $uri;
     }
 
 
@@ -57,6 +60,14 @@ abstract class AbstractCrudController extends Controller
     {
         // fetch list with pagination
         $data = $this->service->fetchList($this->getBaseUri(), $this->getRequest()->getQuery());
+
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $paginationControl = $viewHelperManager->get('paginationControl');
+
+        $data['pagination'] = $paginationControl(
+            $data['paginator'], 'Sliding', 'crud/pagination', [
+            'baseUri' => $this->getBaseUri()
+        ]);
 
         // Title for the resource list
         $data['title'] = sprintf('%s List', $this->getResourceTitle());
@@ -71,7 +82,7 @@ abstract class AbstractCrudController extends Controller
     {
         $request = $this->getRequest();
 
-        if ($request->isPost() && $this->service->createNew($request->getPost())) {
+        if ($request->isPost() && $this->service->save($request->getPost())) {
             return $this->redirectToIndex();
         }
 
@@ -86,19 +97,19 @@ abstract class AbstractCrudController extends Controller
      */
     public function editAction()
     {
-        $item = $this->service->fetch($this->params('id'));
+        $entity = $this->service->fetch($this->params('id'));
         $request = $this->getRequest();
 
-        $this->service->bindToForm($item);
+        $this->service->bindToForm($entity);
 
-        if ($request->isPost() && $this->service->update($request->getPost())) {
+        if ($request->isPost() && $this->service->save($request->getPost())) {
             return $this->redirectToIndex();
         }
 
         return [
             'title' => sprintf('Edit %s', $this->getResourceTitle()),
             'form' => $this->service->prepareForm($request->getUri()->getPath()),
-            'item' => $item,
+            'item' => $entity,
         ];
     }
 
@@ -108,17 +119,9 @@ abstract class AbstractCrudController extends Controller
     public function deleteAction()
     {
         $item = $this->service->fetch($this->params('id'));
-        $request = $this->getRequest();
+        $this->service->remove($item);
 
-        if ($request->isPost()) {
-            if ('yes' === $request->getPost('delete_confirmation', 'no')) {
-                $this->service->remove($item);
-            }
-
-            return $this->redirectToIndex();
-        }
-
-        return compact('item');
+        return $this->redirectToIndex();
     }
 
     /**
@@ -126,7 +129,8 @@ abstract class AbstractCrudController extends Controller
      *
      * @return \Zend\Http\Response
      */
-    public function redirectToIndex()
+    public
+    function redirectToIndex()
     {
         return $this->redirect()->toUrl($this->getBaseUri());
     }
@@ -134,7 +138,8 @@ abstract class AbstractCrudController extends Controller
     /**
      * @return string
      */
-    protected function getRouteName()
+    protected
+    function getRouteName()
     {
         return $this->getEvent()->getRouteMatch()->getMatchedRouteName();
     }

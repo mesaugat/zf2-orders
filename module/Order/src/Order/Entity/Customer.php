@@ -5,6 +5,7 @@ namespace Order\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Foundation\Traits\ArraySerializableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Foundation\Entity\EntityInterface;
 use Foundation\Entity\Traits\CreatedDateTrait;
 use Foundation\Entity\Traits\PrimaryKeyTrait;
 
@@ -13,7 +14,7 @@ use Foundation\Entity\Traits\PrimaryKeyTrait;
  * @ORM\Table(name="customers")
  * @ORM\HasLifecycleCallbacks
  */
-class Customer
+class Customer implements EntityInterface
 {
 
     use PrimaryKeyTrait, CreatedDateTrait;
