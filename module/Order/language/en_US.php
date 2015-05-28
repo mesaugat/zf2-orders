@@ -12,6 +12,7 @@ return [
     'validation.generic_failed' => 'There were some errors in the form',
     'validation.invalid_item_name' => 'Invalid Item Name',
     'validation.invalid_item_rate' => 'Invalid Rate',
+    'validation.invalid_role_name' => 'Invalid Role Name',
     'validation.invalid_role_id' => 'Invalid Role',
 
 ];

@@ -20,6 +20,25 @@ class RoleFilter extends Filter
         ]);
 
         $this->add([
+            'name' => 'name',
+            'required' => true,
+            'filters' => [
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min' => 3,
+                        'max' => 100,
+                    ],
+                ]
+            ],
+        ]);
+
+        $this->add([
             'name' => 'roleId',
             'required' => true,
             'filters' => [
@@ -39,7 +58,7 @@ class RoleFilter extends Filter
                     'name' => 'Regex',
                     'options' => [
                         'pattern' => self::NAME_PATTERN,
-                        'messages'  => [
+                        'messages' => [
                             Regex::NOT_MATCH => $this->translate('validation.invalid_role_id')
                         ]
                     ]

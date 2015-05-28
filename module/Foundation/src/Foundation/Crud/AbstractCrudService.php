@@ -2,24 +2,27 @@
 
 namespace Foundation\Crud;
 
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
+use Zend\Stdlib\Parameters;
+use Zend\Paginator\Paginator;
+use InvalidArgumentException;
 use Foundation\AbstractRepository;
 use Foundation\Entity\EntityInterface;
-use Foundation\Exception\ValidationException;
-use InvalidArgumentException;
+use Foundation\AbstractFilter as Filter;
 use Foundation\AbstractService as Service;
 use Foundation\Exception\NotFoundException;
-use Zend\Paginator\Paginator;
+use Foundation\Exception\ValidationException;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\Parameters;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
-use Foundation\AbstractFilter as Filter;
 
 abstract class AbstractCrudService extends Service
 {
     protected $repository;
     protected $filter;
+
+    const FETCH_ENTITY = 1;
+    const FETCH_RAW = 2;
 
     /**
      * @param ServiceLocatorInterface $serviceManager
@@ -39,13 +42,24 @@ abstract class AbstractCrudService extends Service
      * @param array $data
      * @return EntityInterface
      */
-    protected function hydrateData(array $data)
+    public function hydrate(array $data)
+    {
+        $entityClass = $this->repository->getClassName();
+
+        return $this->getHydrator()->hydrate($data, new $entityClass());
+    }
+
+    public function getHydrator()
     {
         $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $hydrator = new DoctrineObject($em);
-        $entityClass = $this->repository->getClassName();
 
-        return $hydrator->hydrate($data, new $entityClass());
+        return $hydrator;
+    }
+
+    public function extract(EntityInterface $object)
+    {
+        return $this->getHydrator()->extract($object);
     }
 
     /**
@@ -53,8 +67,9 @@ abstract class AbstractCrudService extends Service
      * @return bool
      * @throws ValidationException
      */
-    public function save($data)
-    {
+    public function save(
+        $data
+    ) {
         $this->filter->setData($data);
 
         if (!$this->filter->isValid()) {
@@ -62,7 +77,7 @@ abstract class AbstractCrudService extends Service
         }
 
         // Hydrates the filtered data into corresponding Entity Object
-        $entity = $this->hydrateData($this->filter->getValues());
+        $entity = $this->hydrate($this->filter->getValues());
         $this->repository->save($entity);
 
         return true;
@@ -117,10 +132,11 @@ abstract class AbstractCrudService extends Service
 
     /**
      * @param $id
+     * @param int $mode
      * @return object
      * @throws NotFoundException
      */
-    public function fetch($id)
+    public function fetch($id, $mode = self::FETCH_ENTITY)
     {
         $entity = $this->repository->find($id);
         if ($entity === null) {
