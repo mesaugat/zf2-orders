@@ -17,18 +17,25 @@ Using Composer (recommended)
 The recommended way to get a working copy of this project is to clone the repository
 and use `composer` to install dependencies from the root of the directory:
 
-    php composer.phar install
+    composer install
 
 Configuration Files
 -------------------
+
+First create an empty database in Postgresql.
+
 Make a copy of .example configuration files located at config/autoload directory and fill
 in the required credentials if any.
 
     cp config/autoload/doctrine.local.php.example config/autoload/doctrine.local.php
     cp config/autoload/zdt.local.php.example config/autoload/zdt.local.php
-    
-Import Users & Roles
+
+Import Default users & roles
 --------------------
+Run this command to sync the database with entities
+
+    vendor/bin/doctrine-module orm:schema-tool:update --force
+
 Import default users and roles for ACL from the Postgresql dump file.
 
     psql -U <username> -d <db name> -a -f data/userroles.sql
@@ -71,12 +78,25 @@ Tests
 
 ### Configuration Files
 
+Create a separate database for testing purpose.
+
 Make a copy of .example configuration files located at:
 
 	cp config/autoload/doctrine.testing.php.example config/autoload/doctrine.testing.php
 	cp tests/codeception.yml.example tests/codeception.yml
 
-Fill in the required credentials for the test database. It is **recommended** to use a test database rather than the same database.
+Fill in the required credentials for the test database. 
+
+Once again run these to sync up the test db with entities
+
+    tests/doctrine-module orm:schema-tool:update --force
+
+Keep in mind that we're execuring `tests/doctrine-module` here not `vendor/bin/doctrine-module`.
+
+Import default users & roles into test database
+
+    psql -U <username> -d <test db> -a -f data/userroles.sql
+    
 
 ### Running Tests
 
