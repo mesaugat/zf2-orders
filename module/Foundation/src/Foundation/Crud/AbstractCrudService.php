@@ -2,14 +2,18 @@
 
 namespace Foundation\Crud;
 
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Foundation\AbstractRepository;
 use InvalidArgumentException;
 use Foundation\AbstractService as Service;
 use Foundation\Exception\NotFoundException;
 use Zend\Form\Form;
+use Zend\Paginator\Paginator;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Parameters;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
+use Zend\View\Helper\PaginationControl;
+use Zend\View\Model\ViewModel;
 
 abstract class AbstractCrudService extends Service
 {
@@ -74,33 +78,25 @@ abstract class AbstractCrudService extends Service
             throw new InvalidArgumentException($this->translate('exception.invalid_page'));
         }
 
-        $offset = ($page - 1) * $max;
+        $doctrinePaginator = $this->repository->fetchList();
 
-        $list = $this->repository->fetchList($offset, $max);
-        $items = $list->getIterator()->getArrayCopy();
-        $total = $list->count();
-        $noOfPages = (int)(ceil($total / $max)) ?: 1;
+        $paginator = new Paginator(new DoctrinePaginator($doctrinePaginator));
+        $paginator
+            ->setCurrentPageNumber($page)
+            ->setItemCountPerPage($max);
+
+        $items = $paginator->getIterator()->getArrayCopy();
+        $total = $paginator->getTotalItemCount();
+
+        $noOfPages = $paginator->count();
 
         if ($total > 0) {
-            if ($page > $noOfPages || $page < 1) {
+            if ($page > $noOfPages) {
                 throw new NotFoundException($this->translate('exception.page_not_found'));
             }
         }
 
-        $pageLink = function ($page) use ($baseUri, $query) {
-            return $baseUri . '?' . http_build_query($query->set('page', $page)->toArray());
-        };
-
-        $links = [];
-        if ($page > 1) {
-            $links['prev'] = $pageLink($page - 1);
-        }
-
-        if ($page < $noOfPages) {
-            $links['next'] = $pageLink($page + 1);
-        }
-
-        return compact('items', 'links', 'total', 'noOfPages', 'pageLink', 'page');
+        return compact('items', 'total', 'paginator');
     }
 
     /**

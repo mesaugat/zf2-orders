@@ -1,0 +1,54 @@
+<?php if ($this->pageCount > 0): ?>
+    <div class="clearfix">
+        <nav class="pull-right">
+            <ul class="pagination">
+                <!-- Previous page link -->
+                <?php if (isset($this->previous)): ?>
+                    <li>
+                        <a href="<?php echo $this->baseUri; ?>?page=<?php echo $this->previous; ?>"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="disabled" aria-label="Previous">
+                        <a>
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <!-- Numbered page links -->
+                <?php foreach ($this->pagesInRange as $page): ?>
+                    <?php if ($page != $this->current): ?>
+                        <li>
+                            <a href="<?php echo $this->baseUri; ?>?page=<?php echo $page; ?>">
+                                <?php echo $page; ?>
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="active">
+                            <a><?php echo $page; ?></a>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                <!-- Next page link -->
+                <?php if (isset($this->next)): ?>
+                    <li>
+                        <a href="<?php echo $this->baseUri; ?>?page=<?php echo $this->next; ?>"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="disabled" aria-label="Next">
+                        <a>
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </div>
+<?php endif; ?>

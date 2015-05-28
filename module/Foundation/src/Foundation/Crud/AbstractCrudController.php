@@ -61,6 +61,14 @@ abstract class AbstractCrudController extends Controller
         // fetch list with pagination
         $data = $this->service->fetchList($this->getBaseUri(), $this->getRequest()->getQuery());
 
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $paginationControl = $viewHelperManager->get('paginationControl');
+
+        $data['pagination'] = $paginationControl(
+            $data['paginator'], 'Sliding', 'crud/pagination', [
+            'baseUri' => $this->getBaseUri()
+        ]);
+
         // Title for the resource list
         $data['title'] = sprintf('%s List', $this->getResourceTitle());
 
@@ -111,17 +119,9 @@ abstract class AbstractCrudController extends Controller
     public function deleteAction()
     {
         $item = $this->service->fetch($this->params('id'));
-        $request = $this->getRequest();
+        $this->service->remove($item);
 
-        if ($request->isPost()) {
-            if ('yes' === $request->getPost('delete_confirmation', 'no')) {
-                $this->service->remove($item);
-            }
-
-            return $this->redirectToIndex();
-        }
-
-        return compact('item');
+        return $this->redirectToIndex();
     }
 
     /**
@@ -129,7 +129,8 @@ abstract class AbstractCrudController extends Controller
      *
      * @return \Zend\Http\Response
      */
-    public function redirectToIndex()
+    public
+    function redirectToIndex()
     {
         return $this->redirect()->toUrl($this->getBaseUri());
     }
@@ -137,7 +138,8 @@ abstract class AbstractCrudController extends Controller
     /**
      * @return string
      */
-    protected function getRouteName()
+    protected
+    function getRouteName()
     {
         return $this->getEvent()->getRouteMatch()->getMatchedRouteName();
     }
