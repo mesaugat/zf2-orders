@@ -107,6 +107,7 @@ From the root of the directory `vendor/bin/codecept run`. For further informatio
 Single Page Application with AngularJS
 ------------
 Following programs should be present
+
 	node
 	npm
 	
