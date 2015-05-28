@@ -11,14 +11,14 @@ class RoleForm extends Form
 {
     protected $repository;
 
-    public function __construct(InputFilterInterface $filter = null, RoleRepository $repository, $options = [])
+    public function __construct(RoleRepository $repository, $options = [])
     {
         $this->repository = $repository;
 
         $entityClass = $repository->getClassName();
         $prototypeObject = new $entityClass();
 
-        parent::__construct($filter, $prototypeObject, $options);
+        parent::__construct($prototypeObject, $options);
     }
 
     protected function initialize()
