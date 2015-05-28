@@ -25,7 +25,8 @@ return [
     'service_manager' => [
         'factories' => [
             'Order\Service\ItemService' => 'Order\Factory\ItemServiceFactory',
-            'Order\Service\RoleService' => 'Order\Factory\RoleServiceFactory'
+            'Order\Service\RoleService' => 'Order\Factory\RoleServiceFactory',
+            'Order\Service\CustomerService' => 'Order\Factory\CustomerServiceFactory'
         ],
         'invokables' => [
             'Doctrine\ORM\Mapping\UnderscoreNamingStrategy' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
@@ -35,6 +36,7 @@ return [
         'factories' => [
             'item-controller' => 'Order\Factory\ItemControllerFactory',
             'role-controller' => 'Order\Factory\RoleControllerFactory',
+            'customer-controller' => 'Order\Factory\CustomerControllerFactory',
         ],
     ],
     'translator' => [

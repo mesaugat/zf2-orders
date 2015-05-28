@@ -1,0 +1,47 @@
+<div class="row">
+    <?php $this->headTitle($title); ?>
+    <h1 class="clearfix">
+        <?php echo $this->escapeHtml($title); ?>
+        <small class="pull-right">Total: <?php echo $total ?></small>
+    </h1>
+</div>
+<?php if ($this->isAllowed('customers', 'create')) { ?>
+    <div class="row">
+        <a class="btn btn-primary" href="<?php echo $this->url('customers/add'); ?>">Create New</a>
+    </div>
+<?php } ?>
+<?php if (empty($items)): ?>
+    <div class="row">
+        <div class="alert alert-info"><?php echo $this->translate('no_records_found') ?></div>
+    </div>
+<?php else: ?>
+    <div class="row">
+        <?php echo $pagination; ?>
+        <hr/>
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+            <?php foreach ($items as $index => $customer): ?>
+                <tr>
+                    <td><?php echo $index + 1 ?></td>
+                    <td><?php echo $customer->getName() ?></td>
+                    <td><?php echo $customer->getAddress() ?></td>
+                    <td><?php echo $customer->getCreated()->format('M d, Y h:i:s A') ?></td>
+                    <td>
+                        <a class="btn btn-sm btn-info"
+                           href="<?php echo $this->url('customers',
+                               ['action' => 'edit', 'id' => $customer->getId()]); ?>">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="<?php echo $this->url('customers',
+                            ['action' => 'delete', 'id' => $customer->getId()]); ?>">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+<?php endif; ?>
+

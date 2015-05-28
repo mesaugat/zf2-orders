@@ -21,7 +21,8 @@ return [
         'resource_providers' => [
             BjyAuthorize\Provider\Resource\Config::class => [
                 'items' => [],
-                'roles' => []
+                'roles' => [],
+                'customers' => [],
             ],
         ],
         'rule_providers' => [
@@ -35,6 +36,9 @@ return [
                     //roles
                     [['admin'], 'roles', ['create', 'update', 'delete']],
                     [['admin', 'operator'], 'roles', ['read']],
+                    //roles
+                    [['admin'], 'customers', ['create', 'update', 'delete']],
+                    [['admin', 'operator'], 'customers', ['read']],
                 ],
             ],
         ],
@@ -51,6 +55,11 @@ return [
                 ['route' => 'roles/add', 'roles' => ['admin']],
                 ['route' => 'roles/edit', 'roles' => ['admin']],
                 ['route' => 'roles/delete', 'roles' => ['admin']],
+                // customers
+                ['route' => 'customers', 'roles' => ['user']],
+                ['route' => 'customers/add', 'roles' => ['admin', 'operator']],
+                ['route' => 'customers/edit', 'roles' => ['admin', 'operator']],
+                ['route' => 'customers/delete', 'roles' => ['admin', 'operator']],
                 //zfcuser
                 ['route' => 'zfcuser', 'roles' => ['user', 'guest']],
                 ['route' => 'zfcuser/logout', 'roles' => ['user', 'guest']],

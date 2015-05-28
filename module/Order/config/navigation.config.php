@@ -46,5 +46,27 @@ return [
                 ],
             ],
         ],
+        [
+            'label' => 'Customers',
+            'route' => 'customers',
+            'resource' => 'customers',
+            'privilege' => 'read',
+            'pages' => [
+                [
+                    'label' => 'Add',
+                    'route' => 'customers/add',
+                    'action' => 'add',
+                    'resource' => 'customers',
+                    'privilege' => 'create',
+                ],
+                [
+                    'label' => 'Edit',
+                    'route' => 'customers/edit',
+                    'action' => 'edit',
+                    'resource' => 'customers',
+                    'privilege' => 'update',
+                ],
+            ],
+        ],
     ],
 ];
