@@ -114,9 +114,11 @@ Following programs should be present
 Bower is used for package management and Gulp is used for automating tasks.
 
 Install bower and gulp globally
+
 	npm install -g bower
 	npm install -g gulp
 
 To build the front end app
+
 	project-dir/frontend: gulp build
 	
