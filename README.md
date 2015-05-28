@@ -101,3 +101,21 @@ Import default users & roles into test database
 ### Running Tests
 
 From the root of the directory `vendor/bin/codecept run`. For further information on running specific tests look at [Codeception docs](http://codeception.com/docs/02-GettingStarted).
+
+
+
+Single Page Application with AngularJS
+------------
+Following programs should be present
+	node
+	npm
+	
+Bower is used for package management and Gulp is used for automating tasks.
+
+Install bower and gulp globally
+	npm install -g bower
+	npm install -g gulp
+
+To build the front end app
+	project-dir/frontend: gulp build
+	
