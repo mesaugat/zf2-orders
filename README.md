@@ -78,12 +78,25 @@ Tests
 
 ### Configuration Files
 
+Create a separate database for testing purpose.
+
 Make a copy of .example configuration files located at:
 
 	cp config/autoload/doctrine.testing.php.example config/autoload/doctrine.testing.php
 	cp tests/codeception.yml.example tests/codeception.yml
 
-Fill in the required credentials for the test database. It is **recommended** to use a test database rather than the same database.
+Fill in the required credentials for the test database. 
+
+Once again run these to sync up the test db with entities
+
+    tests/doctrine-module orm:schema-tool:update --force
+
+Keep in mind that we're execuring `tests/doctrine-module` here not `vendor/bin/doctrine-module`.
+
+Import default users & roles into test database
+
+    psql -U <username> -d <test db> -a -f data/userroles.sql
+    
 
 ### Running Tests
 
