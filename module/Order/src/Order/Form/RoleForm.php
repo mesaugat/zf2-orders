@@ -4,8 +4,6 @@ namespace Order\Form;
 
 use Foundation\AbstractForm as Form;
 use Order\Entity\Repository\RoleRepository;
-use Zend\Form\FormInterface;
-use Zend\InputFilter\InputFilterInterface;
 
 class RoleForm extends Form
 {
@@ -71,17 +69,4 @@ class RoleForm extends Form
             ],
         ]);
     }
-
-    public function getData($flag = FormInterface::VALUES_NORMALIZED)
-    {
-        $entity = parent::getData($flag);
-        $parentId = parent::get('parentId')->getValue();
-        if ($parentId) {
-            $entity->setParent($this->repository->find($parentId));
-        }
-
-        return $entity;
-    }
-
-
 }

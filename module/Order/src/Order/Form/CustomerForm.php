@@ -6,7 +6,6 @@ use Foundation\AbstractForm as Form;
 
 class CustomerForm extends Form
 {
-
     protected function initialize()
     {
         $this->add([

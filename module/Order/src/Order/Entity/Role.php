@@ -35,6 +35,13 @@ class Role implements EntityInterface, HierarchicalRoleInterface, ArraySerializa
     protected $roleId;
 
     /**
+     * @var Role
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     */
+    protected $parent;
+
+    /**
      * @return string
      */
     public function getName()
@@ -49,13 +56,6 @@ class Role implements EntityInterface, HierarchicalRoleInterface, ArraySerializa
     {
         $this->name = $name;
     }
-
-    /**
-     * @var Role
-     * @ORM\ManyToOne(targetEntity="Role")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
-     */
-    protected $parent;
 
     /**
      * Get the role id.

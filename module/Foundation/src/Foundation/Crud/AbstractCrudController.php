@@ -31,32 +31,6 @@ abstract class AbstractCrudController extends Controller
     }
 
     /**
-     * Returns the base uri of the resource associated with this controller
-     * from the router config
-     *
-     * @return string|null
-     */
-    protected function getBaseUri()
-    {
-        // get router config
-        $routesConfig = $this->getServiceLocator()->get('config')['router']['routes'];
-        $matchedRouteName = $this->getRouteName();
-
-        // Get the base route
-        if (isset($routesConfig[$matchedRouteName])) {
-            $baseRoute = $routesConfig[$matchedRouteName];
-        } else {
-            $baseRoute = substr($matchedRouteName, 0, strpos($matchedRouteName, '/'));
-            $baseRoute = $routesConfig[$baseRoute];
-        }
-
-        $uri = $baseRoute['options']['route'];
-
-        return $uri;
-    }
-
-
-    /**
      * Default action if none provided.
      *
      * @return ViewModel
@@ -73,15 +47,6 @@ abstract class AbstractCrudController extends Controller
         return new ViewModel($data);
     }
 
-    protected function  getPaginationControl($paginator)
-    {
-        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
-        $paginationControl = $viewHelperManager->get('paginationControl');
-
-        return $paginationControl($paginator, 'Sliding', 'crud/pagination', [
-            'baseUri' => $this->getBaseUri()
-        ]);
-    }
 
     /**
      * @return array|\Zend\Http\Response
@@ -104,7 +69,10 @@ abstract class AbstractCrudController extends Controller
     public function editAction()
     {
         $entity = $this->service->fetch($this->params('id'));
-        $this->form->bind($entity);
+
+        $data = $this->service->extract($entity);
+
+        $this->form->setData($data);
 
         if ($this->handleFormPost()) {
             return $this->redirectToIndex();
@@ -115,6 +83,16 @@ abstract class AbstractCrudController extends Controller
             'form' => $this->form,
             'item' => $entity,
         ];
+    }
+
+    /**
+     * @return array|\Zend\Http\Response
+     */
+    public function deleteAction()
+    {
+        $this->service->remove($this->params('id'));
+
+        return $this->redirectToIndex();
     }
 
     /**
@@ -131,6 +109,7 @@ abstract class AbstractCrudController extends Controller
         if ($request->isPost()) {
 
             $data = $request->getPost();
+
             try {
                 $this->service->save($data);
 
@@ -147,14 +126,14 @@ abstract class AbstractCrudController extends Controller
         return false;
     }
 
-    /**
-     * @return array|\Zend\Http\Response
-     */
-    public function deleteAction()
+    protected function  getPaginationControl($paginator)
     {
-        $this->service->remove($this->params('id'));
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $paginationControl = $viewHelperManager->get('paginationControl');
 
-        return $this->redirectToIndex();
+        return $paginationControl($paginator, 'Sliding', 'crud/pagination', [
+            'baseUri' => $this->getBaseUri()
+        ]);
     }
 
     /**
@@ -173,5 +152,30 @@ abstract class AbstractCrudController extends Controller
     protected function getRouteName()
     {
         return $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+    }
+
+    /**
+     * Returns the base uri of the resource associated with this controller
+     * from the router config
+     *
+     * @return string|null
+     */
+    protected function getBaseUri()
+    {
+        // get router config
+        $routesConfig = $this->getServiceLocator()->get('config')['router']['routes'];
+        $matchedRouteName = $this->getRouteName();
+
+        // Get the base route
+        if (isset($routesConfig[$matchedRouteName])) {
+            $baseRoute = $routesConfig[$matchedRouteName];
+        } else {
+            $baseRoute = substr($matchedRouteName, 0, strpos($matchedRouteName, '/'));
+            $baseRoute = $routesConfig[$baseRoute];
+        }
+
+        $uri = $baseRoute['options']['route'];
+
+        return $uri;
     }
 }
