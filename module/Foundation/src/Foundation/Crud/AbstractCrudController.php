@@ -129,8 +129,7 @@ abstract class AbstractCrudController extends Controller
      *
      * @return \Zend\Http\Response
      */
-    public
-    function redirectToIndex()
+    public function redirectToIndex()
     {
         return $this->redirect()->toUrl($this->getBaseUri());
     }
@@ -138,8 +137,7 @@ abstract class AbstractCrudController extends Controller
     /**
      * @return string
      */
-    protected
-    function getRouteName()
+    protected function getRouteName()
     {
         return $this->getEvent()->getRouteMatch()->getMatchedRouteName();
     }

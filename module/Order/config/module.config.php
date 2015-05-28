@@ -32,13 +32,6 @@ return [
             'Doctrine\ORM\Mapping\UnderscoreNamingStrategy' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
         ],
     ],
-    'controllers' => [
-        'factories' => [
-            'item-controller' => 'Order\Factory\ItemControllerFactory',
-            'role-controller' => 'Order\Factory\RoleControllerFactory',
-            'customer-controller' => 'Order\Factory\CustomerControllerFactory',
-        ],
-    ],
     'translator' => [
         'locale' => 'en_US',
         'translation_file_patterns' => [
@@ -52,6 +45,7 @@ return [
     // The following section is new and should be added to your file
     'router' => require __DIR__ . '/router.config.php',
     'navigation' => require __DIR__ . '/navigation.config.php',
+    'controllers' => require __DIR__ . '/controller.config.php',
     'view_manager' => [
         'template_path_stack' => [
             'order' => __DIR__ . '/../view',
