@@ -33,11 +33,15 @@
                     <td><?php echo $customer->getAddress() ?></td>
                     <td><?php echo $customer->getCreated()->format('M d, Y h:i:s A') ?></td>
                     <td>
-                        <a class="btn btn-sm btn-info"
-                           href="<?php echo $this->url('customers',
-                               ['action' => 'edit', 'id' => $customer->getId()]); ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="<?php echo $this->url('customers',
-                            ['action' => 'delete', 'id' => $customer->getId()]); ?>">Delete</a>
+                        <?php if ($this->isAllowed('customers', 'update')) { ?>
+                            <a class="btn btn-sm btn-info"
+                               href="<?php echo $this->url('customers/edit', ['id' => $customer->getId()]); ?>">Edit</a>
+                        <?php } ?>
+                        <?php if ($this->isAllowed('customers', 'delete')) { ?>
+                            <a class="btn btn-sm btn-danger"
+                               href="<?php echo $this->url('customers/delete', ['id' => $customer->getId()]); ?>"
+                               data-confirm-delete="true">Delete</a>
+                        <?php } ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -45,3 +49,4 @@
     </div>
 <?php endif; ?>
 
+<?php echo $this->partial('crud/delete-confirm-modal'); ?>
