@@ -2,9 +2,7 @@
 
 namespace Order\Factory;
 
-use Order\Entity\Item;
 use Order\Filter\ItemFilter;
-use Order\Form\ItemForm;
 use Order\Service\ItemService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -23,8 +21,7 @@ class ItemServiceFactory implements FactoryInterface
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Order\Entity\Item');
         $translator = $serviceLocator->get('translator');
-        $form = new ItemForm(new ItemFilter($translator), new Item());
 
-        return new ItemService($serviceLocator, $repository, $form);
+        return new ItemService($serviceLocator, $repository, new ItemFilter($translator));
     }
 }

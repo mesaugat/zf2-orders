@@ -3,12 +3,15 @@
 namespace Foundation\Crud;
 
 use Zend\View\Model\ViewModel;
+use Foundation\AbstractForm as Form;
+use Foundation\Exception\ValidationException;
 use Foundation\AbstractController as Controller;
 use Foundation\Crud\AbstractCrudService as CrudService;
 
 abstract class AbstractCrudController extends Controller
 {
     protected $service;
+    protected $form;
 
     /**
      * Returns the title of the resource associated with this controller
@@ -19,10 +22,12 @@ abstract class AbstractCrudController extends Controller
 
     /**
      * @param AbstractCrudService $service
+     * @param Form $form
      */
-    public function __construct(CrudService $service)
+    public function __construct(CrudService $service, Form $form)
     {
         $this->service = $service;
+        $this->form = $form;
     }
 
     /**
@@ -59,20 +64,23 @@ abstract class AbstractCrudController extends Controller
     public function indexAction()
     {
         // fetch list with pagination
-        $data = $this->service->fetchList($this->getBaseUri(), $this->getRequest()->getQuery());
-
-        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
-        $paginationControl = $viewHelperManager->get('paginationControl');
-
-        $data['pagination'] = $paginationControl(
-            $data['paginator'], 'Sliding', 'crud/pagination', [
-            'baseUri' => $this->getBaseUri()
-        ]);
+        $data = $this->service->fetchList($this->getRequest()->getQuery());
 
         // Title for the resource list
         $data['title'] = sprintf('%s List', $this->getResourceTitle());
+        $data['pagination'] = $this->getPaginationControl($data['paginator']);
 
         return new ViewModel($data);
+    }
+
+    protected function  getPaginationControl($paginator)
+    {
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $paginationControl = $viewHelperManager->get('paginationControl');
+
+        return $paginationControl($paginator, 'Sliding', 'crud/pagination', [
+            'baseUri' => $this->getBaseUri()
+        ]);
     }
 
     /**
@@ -80,15 +88,13 @@ abstract class AbstractCrudController extends Controller
      */
     public function addAction()
     {
-        $request = $this->getRequest();
-
-        if ($request->isPost() && $this->service->save($request->getPost())) {
+        if ($this->handleFormPost()) {
             return $this->redirectToIndex();
         }
 
         return [
             'title' => sprintf('Create New %s', $this->getResourceTitle()),
-            'form' => $this->service->prepareForm($request->getUri()->getPath()),
+            'form' => $this->form,
         ];
     }
 
@@ -98,19 +104,47 @@ abstract class AbstractCrudController extends Controller
     public function editAction()
     {
         $entity = $this->service->fetch($this->params('id'));
-        $request = $this->getRequest();
+        $this->form->bind($entity);
 
-        $this->service->bindToForm($entity);
-
-        if ($request->isPost() && $this->service->save($request->getPost())) {
+        if ($this->handleFormPost()) {
             return $this->redirectToIndex();
         }
 
         return [
             'title' => sprintf('Edit %s', $this->getResourceTitle()),
-            'form' => $this->service->prepareForm($request->getUri()->getPath()),
+            'form' => $this->form,
             'item' => $entity,
         ];
+    }
+
+    /**
+     * Handles form submit and processes the form data
+     *
+     * @return bool
+     *      true if form is successfully submitted
+     *      false if form has not been submitted has errors
+     */
+    protected function handleFormPost()
+    {
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $data = $request->getPost();
+            try {
+                $this->service->save($data);
+
+                return true;
+            } catch (ValidationException $e) {
+
+                $this->form->setData($data);
+                $this->form->setMessages($e->getValidationMessages());
+            }
+        }
+
+        $this->form->setAttribute('action', $request->getUri()->getPath())->prepare();
+
+        return false;
     }
 
     /**
@@ -118,8 +152,7 @@ abstract class AbstractCrudController extends Controller
      */
     public function deleteAction()
     {
-        $item = $this->service->fetch($this->params('id'));
-        $this->service->remove($item);
+        $this->service->remove($this->params('id'));
 
         return $this->redirectToIndex();
     }
@@ -129,7 +162,7 @@ abstract class AbstractCrudController extends Controller
      *
      * @return \Zend\Http\Response
      */
-    public function redirectToIndex()
+    protected function redirectToIndex()
     {
         return $this->redirect()->toUrl($this->getBaseUri());
     }

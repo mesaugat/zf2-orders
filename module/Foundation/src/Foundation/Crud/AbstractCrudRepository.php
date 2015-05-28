@@ -3,13 +3,16 @@
 
 namespace Foundation\Crud;
 
+use Foundation\Entity\EntityInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Foundation\AbstractRepository as Repository;
-use Foundation\Entity\EntityInterface;
 
 abstract class AbstractCrudRepository extends Repository
 {
 
+    /**
+     * @return Paginator
+     */
     public function fetchList()
     {
         $dql = sprintf('SELECT i FROM %s i ORDER BY i.created DESC', $this->getEntityName());
@@ -22,6 +25,10 @@ abstract class AbstractCrudRepository extends Repository
         return $paginator;
     }
 
+    /**
+     * @param EntityInterface $entity
+     * @return EntityInterface
+     */
     public function save(EntityInterface $entity)
     {
         $em = $this->getEntityManager();
@@ -35,7 +42,10 @@ abstract class AbstractCrudRepository extends Repository
         return $entity;
     }
 
-    public function remove($item)
+    /**
+     * @param EntityInterface $item
+     */
+    public function remove(EntityInterface $item)
     {
         $em = $this->getEntityManager();
         $em->remove($item);
