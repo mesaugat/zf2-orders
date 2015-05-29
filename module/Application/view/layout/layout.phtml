@@ -40,15 +40,24 @@
                     src="<?php echo $this->basePath('img/zf2-logo.png') ?>"
                     alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse clearfix">
             <?php echo $this->navigation('navigation')
                 ->menu()
                 ->setMinDepth(0)
                 ->setMaxDepth(0)
                 ->setUlClass('nav navbar-nav');
             ?>
+            <ul class="navbar-nav nav pull-right">
+                <?php if ($this->zfcUserIdentity()) { ?>
+                    <li><a href="<?php echo $this->url('zfcuser'); ?>">My Profile</a></li>
+                    <li><a href="<?php echo $this->url('zfcuser/logout'); ?>">Logout</a></li>
+                <?php } else { ?>
+                    <li><a href="<?php echo $this->url('zfcuser/login'); ?>">Login</a></li>
+                    <li><a href="<?php echo $this->url('zfcuser/register'); ?>">Register</a></li>
+                <?php } ?>
+            </ul>
         </div>
-        <!--/.nav-collapse -->
+        <!--/.nav - collapse-->
     </div>
 </nav>
 <div class="container">
