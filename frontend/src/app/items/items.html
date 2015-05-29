@@ -16,14 +16,14 @@
       	<th>Created</th>
       	<th></th>
     	</tr>
-    	<tr ng-repeat="item in items">
-      	<td>{{index}}</td>
+    	<tr ng-repeat="item in items.data">
+      	<td>{{$index+1}}</td>
       	<td>{{item.name}}</td>
       	<td>{{item.rate}}</td>
       	<td>{{item.created}}</td>
       	<td>
-      	<a class="btn btn-sm btn-info" href="#/items/edit/1">Edit</a>
-      	<a class="btn btn-sm btn-danger" href="#" ng-click="confirmDelete(index);">Delete</a>
+      	<a class="btn btn-sm btn-info" ng-href="#/items/edit/{{item.id}}">Edit</a>
+      	<a class="btn btn-sm btn-danger" ng-href="#" ng-click="confirmDelete($index);">Delete</a>
       	</td>
     	</tr>
   	</tbody>

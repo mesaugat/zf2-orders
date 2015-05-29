@@ -12,9 +12,13 @@
           templateUrl: 'app/items/items.html',
           controller: 'ItemsController'
         })
+        .when('/items/edit/:id', {
+          templateUrl: 'app/items/items.edit.html',
+          controller: 'ItemsEditController'
+        })
         .when('/items/create', {
           templateUrl: 'app/items/items.create.html',
-          controller: 'ItemsController'
+          controller: 'ItemsCreateController'
         })
         .when('/customers', {
           templateUrl: 'app/customers/customers.html',
