@@ -20,13 +20,27 @@
         return $http.get(CONSTANT.ITEMS_URL + '/' + id);
       },
 
-      update: function(item) {
+      remove: function(id) {
         return $http({
             url: CONSTANT.ITEMS_URL + '/' + id,
+            method: 'DELETE',
+          });
+      },      
+
+      create: function(item) {
+        return $http({
+            url: CONSTANT.ITEMS_URL,
+            method: 'POST',
+            data: item
+          });
+      },
+
+      update: function(item) {
+        return $http({
+            url: CONSTANT.ITEMS_URL + '/' + item.id,
             method: 'PUT',
             data: item
           });
-        }
       }
     };
   }]);

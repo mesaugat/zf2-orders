@@ -22,8 +22,8 @@
       	<td>{{item.rate}}</td>
       	<td>{{item.created}}</td>
       	<td>
-      	<a class="btn btn-sm btn-info" ng-href="#/items/edit/{{item.id}}">Edit</a>
-      	<a class="btn btn-sm btn-danger" ng-href="#" ng-click="confirmDelete($index);">Delete</a>
+      	<a class="btn btn-sm btn-info" href="#" ng-href="#/items/edit/{{item.id}}">Edit</a>
+      	<a class="btn btn-sm btn-danger" href="#" ng-click="remove($index);">Delete</a>
       	</td>
     	</tr>
   	</tbody>
