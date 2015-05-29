@@ -9,6 +9,8 @@ Introduction
 This is a simple, orders application using the ZF2 MVC layer and module
 systems.
 
+![Architecture Diagram](https://raw.githubusercontent.com/leapfrogtechnology/zf2-orders/develop/architecture_diagram.png)
+
 Installation
 ------------
 
