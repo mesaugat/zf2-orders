@@ -122,3 +122,4 @@ To build the front end app
 
 	project-dir/frontend: gulp build
 	
+Gulp will move all the required htmls, merged css and merged js into public/frontend dir.
