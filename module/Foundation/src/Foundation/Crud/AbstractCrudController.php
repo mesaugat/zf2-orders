@@ -38,7 +38,9 @@ abstract class AbstractCrudController extends Controller
     public function indexAction()
     {
         // fetch list with pagination
-        $data = $this->service->fetchList($this->getRequest()->getQuery());
+        $data = $this->service->fetchList($this->getRequest()->getQuery(), [
+            'baseUri' => $this->getBaseUri()
+        ]);
 
         // Title for the resource list
         $data['title'] = sprintf('%s List', $this->getResourceTitle());

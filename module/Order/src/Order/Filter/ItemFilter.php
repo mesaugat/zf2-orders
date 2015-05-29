@@ -40,7 +40,7 @@ class ItemFilter extends Filter
                     'name' => 'Regex',
                     'options' => [
                         'pattern' => self::ITEM_NAME_PATTERN,
-                        'messages'  => [
+                        'messages' => [
                             Regex::NOT_MATCH => $this->translate('validation.invalid_item_name')
                         ]
                     ]
@@ -60,7 +60,7 @@ class ItemFilter extends Filter
                     'name' => 'Regex',
                     'options' => [
                         'pattern' => self::FLOATING_POINT_PATTERN,
-                        'messages'  => [
+                        'messages' => [
                             Regex::NOT_MATCH => $this->translate('validation.invalid_item_rate')
                         ]
                     ]
