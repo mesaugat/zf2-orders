@@ -2,14 +2,12 @@
 
 namespace Foundation;
 
-use Zend\Form\Form;
-use Zend\Form\FormInterface;
 use Foundation\Entity\EntityInterface;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Form\Form;
 
 abstract class AbstractForm extends Form
 {
+
     /**
      * @param EntityInterface $prototype
      * @param array $options

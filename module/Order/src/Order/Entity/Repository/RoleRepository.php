@@ -2,11 +2,11 @@
 
 namespace Order\Entity\Repository;
 
-use Order\Entity\Role;
 use Foundation\Crud\AbstractCrudRepository as CrudRepository;
 
 class RoleRepository extends CrudRepository
 {
+
     /**
      * Returns array of role names
      * in the form [ id => role_id ] for using in select dropdown
