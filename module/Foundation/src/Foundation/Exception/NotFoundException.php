@@ -2,7 +2,7 @@
 
 namespace Foundation\Exception;
 
-class NotFoundException extends \Exception
+class NotFoundException extends HttpException
 {
-
+    protected $statusCode = 404;
 }

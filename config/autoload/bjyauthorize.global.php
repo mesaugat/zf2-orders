@@ -70,6 +70,8 @@ return [
                 ['route' => 'zfcuser/register', 'roles' => ['guest']],
                 // home
                 ['route' => 'home', 'roles' => ['guest', 'user']],
+                //api
+                ['route' => 'api-v1/items', 'roles' => ['guest', 'user']],
             ]
         ]
     ],

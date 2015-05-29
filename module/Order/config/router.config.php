@@ -140,5 +140,26 @@ return [
                 ]
             ]
         ],
+        'api-v1' => [
+            'type' => 'literal',
+            'options' => [
+                'route' => '/api/v1',
+            ],
+            'may_terminate' => false,
+            'child_routes' => [
+                'items' => [
+                    'type' => 'segment',
+                    'options' => [
+                        'route' => '/items[/:id]',
+                        'constraints' => [
+                            'id' => '[0-9]+',
+                        ],
+                        'defaults' => [
+                            'controller' => 'api-v1-item-controller',
+                        ]
+                    ]
+                ],
+            ],
+        ]
     ],
 ];
