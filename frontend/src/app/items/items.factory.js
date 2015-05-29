@@ -18,6 +18,15 @@
 
       fetch: function(id) {
         return $http.get(CONSTANT.ITEMS_URL + '/' + id);
+      },
+
+      update: function(item) {
+        return $http({
+            url: CONSTANT.ITEMS_URL + '/' + id,
+            method: 'PUT',
+            data: item
+          });
+        }
       }
     };
   }]);

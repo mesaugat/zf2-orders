@@ -1,6 +1,6 @@
 <div ng-include="'app/components/navbar/navbar.html'"></div>
 
-<div class="container" ng-controller="ItemsCreateController">
+<div class="container" ng-controller="ItemsEditController">
 	<h1>Item Edit</h1>
 
 	<div class="text-right">
@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="form-group col-sm-8 col-sm-offset-2">
-				<button class="btn-primary btn">Submit</button>
+				<button class="btn-primary btn" ng-click="save()">Submit</button>
 			</div>
 		</fieldset>
 	</form>

@@ -24,5 +24,15 @@
       ItemsFactory.fetch($routeParams.id).success(function(data) {
         $scope.form = data;
       });
+
+      $scope.save = function() {
+        ItemsFactory.update($scope.form)
+          .success(function(data) {
+
+          })
+          .error(function(data) {
+            
+          });
+      };
   }]);
 })();
