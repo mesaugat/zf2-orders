@@ -92,7 +92,7 @@ return [
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ],
         'template_path_stack' => [
-            __DIR__ . '/../view',
+            'application' => __DIR__ . '/../view',
         ],
     ],
     // Placeholder for console routes
