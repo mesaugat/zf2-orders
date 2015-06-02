@@ -32,7 +32,7 @@ return [
                 'allow' => [
                     //items
                     [['admin'], 'items', ['create', 'update', 'delete']],
-                    [['admin', 'guest', 'operator'], 'items', ['read']],
+                    [['admin', 'operator'], 'items', ['read']],
                     //roles
                     [['admin'], 'roles', ['create', 'update', 'delete']],
                     [['admin', 'operator'], 'roles', ['read']],
@@ -46,7 +46,7 @@ return [
             // route guards
             BjyAuthorize\Guard\Route::class => [
                 // items
-                ['route' => 'items', 'roles' => ['user', 'guest']],
+                ['route' => 'items', 'roles' => ['operator', 'admin']],
                 ['route' => 'items/add', 'roles' => ['admin']],
                 ['route' => 'items/edit', 'roles' => ['admin']],
                 ['route' => 'items/delete', 'roles' => ['admin']],

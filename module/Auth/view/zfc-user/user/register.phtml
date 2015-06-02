@@ -1,0 +1,32 @@
+<?php
+$form = $this->registerForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/register'));
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'form-signin');
+?>
+<h1 class="auth"><?php echo $this->translate('Register'); ?></h1>
+
+<div class="card card-container">
+    <?php echo $this->form()->openTag($form) ?>
+
+    <?php foreach ($form as $element): ?>
+        <?php if (!$element instanceof Zend\Form\Element\Button): ?>
+            <?php $element->setAttribute('class', 'form-control') ?>
+            <?php echo $this->formLabel($element) ?>
+        <?php endif ?>
+        <?php if ($element instanceof Zend\Form\Element\Button): ?>
+            <?php echo $this->formButton($element) ?>
+        <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
+            <?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?>
+        <?php else: ?>
+            <?php echo $this->formInput($element) . $this->formElementErrors($element) ?>
+        <?php endif ?>
+    <?php endforeach ?>
+
+    <?php if ($this->redirect): ?>
+        <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>"/>
+    <?php endif ?>
+
+    <?php echo $this->form()->closeTag() ?>
+</div>

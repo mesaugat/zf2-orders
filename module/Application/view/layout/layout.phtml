@@ -17,7 +17,9 @@
     ])
         ->prependStylesheet($this->basePath('css/style.css'))
         ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-        ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
+        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('css/login.layout.phtmlcss'))
+    ?>
 
     <!-- Scripts -->
     <?php echo $this->headScript()
@@ -36,9 +38,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img
-                    src="<?php echo $this->basePath('img/zf2-logo.png') ?>"
-                    alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>
+            <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
+                <?php echo $this->translate('ZF2Orders') ?>
+            </a>
         </div>
         <div class="collapse navbar-collapse clearfix">
             <?php echo $this->navigation('navigation')

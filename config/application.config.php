@@ -15,6 +15,7 @@ $modules = [
     // Our Modules
     'Foundation',
     'Application',
+    'Auth',
     'Order',
 ];
 
