@@ -1,0 +1,60 @@
+<?php
+$form = $this->loginForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/login'));
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'form-signin');
+?>
+<h1 class="auth">
+    <?php echo $this->translate('Sign In'); ?>
+</h1>
+<div class="card card-container">
+    <?php echo $this->form()->openTag($form) ?>
+
+    <?php if (!empty($messages = $form->get('identity')->getMessages())) { ?>
+        <div class="alert alert-danger">
+            <?php echo $messages[0] ?>
+        </div>
+    <?php } ?>
+
+    <?php echo $this->formInput(
+        $form->get('identity')
+            ->setAttribute('id', 'input-identity')
+            ->setAttribute('class', 'form-control')
+            ->setAttribute('required', 'true')
+            ->setAttribute('autofocus', 'true')
+            ->setAttribute('placeholder', 'Username or Email')
+    );
+    ?>
+
+    <?php echo $this->formInput(
+        $form->get('credential')
+            ->setAttribute('id', 'input-password')
+            ->setAttribute('class', 'form-control')
+            ->setAttribute('required', 'true')
+            ->setAttribute('placeholder', 'Password')
+    ); ?>
+
+    <?php echo $this->formButton(
+        $form->get('submit')->setAttribute('class',
+            'btn btn-lg btn-primary btn-block btn-signin')
+    ); ?>
+
+    <?php if ($this->redirect): ?>
+        <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>"/>
+    <?php endif ?>
+
+    <?php echo $this->form()->closeTag() ?>
+    <p>
+        <a href="#"> Forgot password? </a>
+    </p>
+</div>
+
+<div class="text-center">
+    <?php if ($this->enableRegistration) : ?>
+        <?php echo $this->translate('Not registered?'); ?> <a
+            href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect=' . $this->escapeUrl($this->redirect) : '') ?>"><?php echo $this->translate('Sign up!'); ?></a>
+    <?php endif; ?>
+</div>
+<!-- /card-container -->
+

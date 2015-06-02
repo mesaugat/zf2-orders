@@ -4,6 +4,7 @@ namespace Application;
 use Zend\Console\Console;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\Navigation;
 
 class Module
@@ -13,9 +14,14 @@ class Module
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-
         $sm = $e->getApplication()->getServiceManager();
 
+        // ACL for Navigation
+        $this->setupNavigation($sm);
+    }
+
+    protected function setupNavigation(ServiceLocatorInterface $sm)
+    {
         // Add ACL information to the Navigation view helper
         if (!Console::isConsole()) {
             $authorize = $sm->get('BjyAuthorize\Service\Authorize');
